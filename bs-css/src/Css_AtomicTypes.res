@@ -1,9 +1,9 @@
 let join = (strings, separator) => {
-  let rec run = (strings, acc) =>
+  let rec run: (list<string>, string) => string = (strings, acc) =>
     switch strings {
     | list{} => acc
-    | list{x} => acc ++ x
-    | list{x, ...xs} => run(xs, acc ++ x ++ separator)
+    | list{x} => acc + x
+    | list{x, ...xs} => run(xs, acc + x + separator)
     }
   run(strings, "")
 }
@@ -29,12 +29,12 @@ module Var = {
   let var = x => #var(x)
   let varDefault = (x, default) => #varDefault((x, default))
 
-  let prefix = x => Js.String.startsWith("--", x) ? x : "--" ++ x
+  let prefix = x => x->String.startsWith("--") ? x : "--" + x
 
   let toString = x =>
     switch x {
-    | #var(x) => "var(" ++ prefix(x) ++ ")"
-    | #varDefault(x, v) => "var(" ++ prefix(x) ++ "," ++ v ++ ")"
+    | #var(x) => "var(" + prefix(x) + ")"
+    | #varDefault(x, v) => "var(" + prefix(x) + "," + v + ")"
     }
 }
 
@@ -46,8 +46,8 @@ module Time = {
 
   let toString = x =>
     switch x {
-    | #s(v) => Js.Float.toString(v) ++ "s"
-    | #ms(v) => Js.Float.toString(v) ++ "ms"
+    | #s(v) => Float.toString(v) + "s"
+    | #ms(v) => Float.toString(v) + "ms"
     }
 }
 
@@ -58,7 +58,7 @@ module Percentage = {
 
   let toString = x =>
     switch x {
-    | #percent(x) => Js.Float.toString(x) ++ "%"
+    | #percent(x) => Float.toString(x) + "%"
     }
 }
 
@@ -67,7 +67,7 @@ module Url = {
 
   let toString = x =>
     switch x {
-    | #url(s) => "url(" ++ s ++ ")"
+    | #url(s) => "url(" + s + ")"
     }
 }
 
@@ -111,23 +111,23 @@ module Length = {
 
   let toString = x =>
     switch x {
-    | #ch(x) => Js.Float.toString(x) ++ "ch"
-    | #em(x) => Js.Float.toString(x) ++ "em"
-    | #ex(x) => Js.Float.toString(x) ++ "ex"
-    | #rem(x) => Js.Float.toString(x) ++ "rem"
-    | #vh(x) => Js.Float.toString(x) ++ "vh"
-    | #vw(x) => Js.Float.toString(x) ++ "vw"
-    | #vmin(x) => Js.Float.toString(x) ++ "vmin"
-    | #vmax(x) => Js.Float.toString(x) ++ "vmax"
-    | #px(x) => Js.Int.toString(x) ++ "px"
-    | #pxFloat(x) => Js.Float.toString(x) ++ "px"
-    | #cm(x) => Js.Float.toString(x) ++ "cm"
-    | #mm(x) => Js.Float.toString(x) ++ "mm"
-    | #inch(x) => Js.Float.toString(x) ++ "in"
-    | #pc(x) => Js.Float.toString(x) ++ "pc"
-    | #pt(x) => Js.Int.toString(x) ++ "pt"
+    | #ch(x) => Float.toString(x) + "ch"
+    | #em(x) => Float.toString(x) + "em"
+    | #ex(x) => Float.toString(x) + "ex"
+    | #rem(x) => Float.toString(x) + "rem"
+    | #vh(x) => Float.toString(x) + "vh"
+    | #vw(x) => Float.toString(x) + "vw"
+    | #vmin(x) => Float.toString(x) + "vmin"
+    | #vmax(x) => Float.toString(x) + "vmax"
+    | #px(x) => Int.toString(x) + "px"
+    | #pxFloat(x) => Float.toString(x) + "px"
+    | #cm(x) => Float.toString(x) + "cm"
+    | #mm(x) => Float.toString(x) + "mm"
+    | #inch(x) => Float.toString(x) + "in"
+    | #pc(x) => Float.toString(x) + "pc"
+    | #pt(x) => Int.toString(x) + "pt"
     | #zero => "0"
-    | #percent(x) => Js.Float.toString(x) ++ "%"
+    | #percent(x) => Float.toString(x) + "%"
     }
 }
 
@@ -150,12 +150,12 @@ module PercentageLengthCalc = {
     switch x {
     | #...Percentage.t as p => Percentage.toString(p)
     | #...Length.t as l => Length.toString(l)
-    | #min(a, b) => "min(" ++ toString(a) ++ ", " ++ toString(b) ++ ")"
-    | #max(a, b) => "max(" ++ toString(a) ++ ", " ++ toString(b) ++ ")"
-    | #add(a, b) => "calc(" ++ toString(a) ++ " + " ++ toString(b) ++ ")"
-    | #subtract(a, b) => "calc(" ++ toString(a) ++ " - " ++ toString(b) ++ ")"
-    | #mul(a, b) => "calc(" ++ toString(a) ++ " * " ++ Js.Float.toString(b) ++ ")"
-    | #div(a, b) => "calc(" ++ toString(a) ++ " / " ++ Js.Float.toString(b) ++ ")"
+    | #min(a, b) => "min(" + toString(a) + ", " + toString(b) + ")"
+    | #max(a, b) => "max(" + toString(a) + ", " + toString(b) + ")"
+    | #add(a, b) => "calc(" + toString(a) + " + " + toString(b) + ")"
+    | #subtract(a, b) => "calc(" + toString(a) + " - " + toString(b) + ")"
+    | #mul(a, b) => "calc(" + toString(a) + " * " + Float.toString(b) + ")"
+    | #div(a, b) => "calc(" + toString(a) + " / " + Float.toString(b) + ")"
     }
 }
 
@@ -169,10 +169,10 @@ module Angle = {
 
   let toString = x =>
     switch x {
-    | #deg(x) => Js.Float.toString(x) ++ "deg"
-    | #rad(x) => Js.Float.toString(x) ++ "rad"
-    | #grad(x) => Js.Float.toString(x) ++ "grad"
-    | #turn(x) => Js.Float.toString(x) ++ "turn"
+    | #deg(x) => Float.toString(x) + "deg"
+    | #rad(x) => Float.toString(x) + "rad"
+    | #grad(x) => Float.toString(x) + "grad"
+    | #turn(x) => Float.toString(x) + "turn"
     }
 }
 
@@ -461,17 +461,17 @@ module TimingFunction = {
     | #easeInOut => "ease-in-out"
     | #stepStart => "step-start"
     | #stepEnd => "step-end"
-    | #steps(i, #start) => "steps(" ++ Js.Int.toString(i) ++ ", start)"
-    | #steps(i, #end_) => "steps(" ++ Js.Int.toString(i) ++ ", end)"
+    | #steps(i, #start) => "steps(" + Int.toString(i) + ", start)"
+    | #steps(i, #end_) => "steps(" + Int.toString(i) + ", end)"
     | #cubicBezier(a, b, c, d) =>
-      "cubic-bezier(" ++
-      Js.Float.toString(a) ++
-      ", " ++
-      Js.Float.toString(b) ++
-      ", " ++
-      Js.Float.toString(c) ++
-      ", " ++
-      Js.Float.toString(d) ++ ")"
+      "cubic-bezier(" +
+      Float.toString(a) +
+      ", " +
+      Float.toString(b) +
+      ", " +
+      Float.toString(c) +
+      ", " +
+      Float.toString(d) + ")"
     | #jumpStart => "jump-start"
     | #jumpEnd => "jump-end"
     | #jumpNone => "jump-none"
@@ -486,7 +486,7 @@ module RepeatValue = {
     switch x {
     | #autoFill => "auto-fill"
     | #autoFit => "auto-fit"
-    | #num(x) => Js.Int.toString(x)
+    | #num(x) => Int.toString(x)
     }
 }
 
@@ -590,7 +590,7 @@ module FontWeight = {
 
   let toString = x =>
     switch x {
-    | #num(n) => Js.Int.toString(n)
+    | #num(n) => Int.toString(n)
     | #thin => "100"
     | #extraLight => "200"
     | #light => "300"
@@ -647,52 +647,46 @@ module Transform = {
   let skewX = a => #skewX(a)
   let skewY = a => #skewY(a)
 
-  let string_of_scale = (x, y) =>
-    "scale(" ++ Js.Float.toString(x) ++ ", " ++ Js.Float.toString(y) ++ ")"
+  let string_of_scale = (x, y) => "scale(" + Float.toString(x) + ", " + Float.toString(y) + ")"
 
   let string_of_translate3d = (x, y, z) =>
-    "translate3d(" ++
-    Length.toString(x) ++
-    ", " ++
-    Length.toString(y) ++
-    ", " ++
-    Length.toString(z) ++ ")"
+    "translate3d(" +
+    Length.toString(x) +
+    ", " +
+    Length.toString(y) +
+    ", " +
+    Length.toString(z) + ")"
 
   let toString = x =>
     switch x {
-    | #translate(x, y) => "translate(" ++ Length.toString(x) ++ ", " ++ Length.toString(y) ++ ")"
+    | #translate(x, y) => "translate(" + Length.toString(x) + ", " + Length.toString(y) + ")"
     | #translate3d(x, y, z) => string_of_translate3d(x, y, z)
-    | #translateX(x) => "translateX(" ++ Length.toString(x) ++ ")"
-    | #translateY(y) => "translateY(" ++ Length.toString(y) ++ ")"
-    | #translateZ(z) => "translateZ(" ++ Length.toString(z) ++ ")"
+    | #translateX(x) => "translateX(" + Length.toString(x) + ")"
+    | #translateY(y) => "translateY(" + Length.toString(y) + ")"
+    | #translateZ(z) => "translateZ(" + Length.toString(z) + ")"
     | #scale(x, y) => string_of_scale(x, y)
     | #scale3d(x, y, z) =>
-      "scale3d(" ++
-      Js.Float.toString(x) ++
-      ", " ++
-      Js.Float.toString(y) ++
-      ", " ++
-      Js.Float.toString(z) ++ ")"
-    | #scaleX(x) => "scaleX(" ++ Js.Float.toString(x) ++ ")"
-    | #scaleY(y) => "scaleY(" ++ Js.Float.toString(y) ++ ")"
-    | #scaleZ(z) => "scaleZ(" ++ Js.Float.toString(z) ++ ")"
-    | #rotate(a) => "rotate(" ++ Angle.toString(a) ++ ")"
+      "scale3d(" + Float.toString(x) + ", " + Float.toString(y) + ", " + Float.toString(z) + ")"
+    | #scaleX(x) => "scaleX(" + Float.toString(x) + ")"
+    | #scaleY(y) => "scaleY(" + Float.toString(y) + ")"
+    | #scaleZ(z) => "scaleZ(" + Float.toString(z) + ")"
+    | #rotate(a) => "rotate(" + Angle.toString(a) + ")"
     | #rotate3d(x, y, z, a) =>
-      "rotate3d(" ++
-      Js.Float.toString(x) ++
-      ", " ++
-      Js.Float.toString(y) ++
-      ", " ++
-      Js.Float.toString(z) ++
-      ", " ++
-      Angle.toString(a) ++ ")"
-    | #rotateX(a) => "rotateX(" ++ Angle.toString(a) ++ ")"
-    | #rotateY(a) => "rotateY(" ++ Angle.toString(a) ++ ")"
-    | #rotateZ(a) => "rotateZ(" ++ Angle.toString(a) ++ ")"
-    | #skew(x, y) => "skew(" ++ Angle.toString(x) ++ ", " ++ Angle.toString(y) ++ ")"
-    | #skewX(a) => "skewX(" ++ Angle.toString(a) ++ ")"
-    | #skewY(a) => "skewY(" ++ Angle.toString(a) ++ ")"
-    | #perspective(x) => "perspective(" ++ Js.Int.toString(x) ++ ")"
+      "rotate3d(" +
+      Float.toString(x) +
+      ", " +
+      Float.toString(y) +
+      ", " +
+      Float.toString(z) +
+      ", " +
+      Angle.toString(a) + ")"
+    | #rotateX(a) => "rotateX(" + Angle.toString(a) + ")"
+    | #rotateY(a) => "rotateY(" + Angle.toString(a) + ")"
+    | #rotateZ(a) => "rotateZ(" + Angle.toString(a) + ")"
+    | #skew(x, y) => "skew(" + Angle.toString(x) + ", " + Angle.toString(y) + ")"
+    | #skewX(a) => "skewX(" + Angle.toString(a) + ")"
+    | #skewY(a) => "skewY(" + Angle.toString(a) + ")"
+    | #perspective(x) => "perspective(" + Int.toString(x) + ")"
     }
 }
 
@@ -726,7 +720,7 @@ module AnimationIterationCount = {
   let toString = x =>
     switch x {
     | #infinite => "infinite"
-    | #count(x) => Js.Int.toString(x)
+    | #count(x) => Int.toString(x)
     }
 }
 
@@ -878,7 +872,7 @@ module ColorScheme = {
   let toString = x =>
     switch x {
     | #...value as v => toStringValue(v)
-    | #many(v, v') => toStringValue(v) ++ " " ++ toStringValue(v')
+    | #many(v, v') => toStringValue(v) + " " + toStringValue(v')
     }
 }
 
@@ -915,7 +909,7 @@ module Color = {
 
   let string_of_alpha = alpha =>
     switch alpha {
-    | #num(f) => Js.Float.toString(f)
+    | #num(f) => Float.toString(f)
     | #...Percentage.t as pc => Percentage.toString(pc)
     | #...Var.t as va => Var.toString(va)
     }
@@ -929,38 +923,33 @@ module Color = {
   let toStringValue = x =>
     switch x {
     | #rgb(r, g, b) =>
-      "rgb(" ++
-      Js.Int.toString(r) ++
-      ", " ++
-      Js.Int.toString(g) ++
-      ", " ++
-      Js.Int.toString(b) ++ ")"
+      "rgb(" + Int.toString(r) + ", " + Int.toString(g) + ", " + Int.toString(b) + ")"
     | #rgba(r, g, b, a) =>
-      "rgba(" ++
-      Js.Int.toString(r) ++
-      ", " ++
-      Js.Int.toString(g) ++
-      ", " ++
-      Js.Int.toString(b) ++
-      ", " ++
-      string_of_alpha(a) ++ ")"
+      "rgba(" +
+      Int.toString(r) +
+      ", " +
+      Int.toString(g) +
+      ", " +
+      Int.toString(b) +
+      ", " +
+      string_of_alpha(a) + ")"
     | #hsl(h, s, l) =>
-      "hsl(" ++
-      string_of_hue(h) ++
-      ", " ++
-      string_of_percentage(s) ++
-      ", " ++
-      string_of_percentage(l) ++ ")"
+      "hsl(" +
+      string_of_hue(h) +
+      ", " +
+      string_of_percentage(s) +
+      ", " +
+      string_of_percentage(l) + ")"
     | #hsla(h, s, l, a) =>
-      "hsla(" ++
-      string_of_hue(h) ++
-      ", " ++
-      string_of_percentage(s) ++
-      ", " ++
-      string_of_percentage(l) ++
-      ", " ++
-      string_of_alpha(a) ++ ")"
-    | #hex(s) => "#" ++ s
+      "hsla(" +
+      string_of_hue(h) +
+      ", " +
+      string_of_percentage(s) +
+      ", " +
+      string_of_percentage(l) +
+      ", " +
+      string_of_alpha(a) + ")"
+    | #hex(s) => "#" + s
     | #transparent => "transparent"
     | #currentColor => "currentColor"
     }
@@ -968,7 +957,7 @@ module Color = {
   let toString = x =>
     switch x {
     | #...value as ba => toStringValue(ba)
-    | #lightDark(c, c') => "light-dark(" ++ toStringValue(c) ++ ", " ++ toStringValue(c') ++ ")"
+    | #lightDark(c, c') => "light-dark(" + toStringValue(c) + ", " + toStringValue(c') + ")"
     }
 }
 
@@ -1037,7 +1026,7 @@ module LineHeight = {
   let toString = x =>
     switch x {
     | #normal => "normal"
-    | #abs(x) => Js.Float.toString(x)
+    | #abs(x) => Float.toString(x)
     }
 }
 
@@ -1174,8 +1163,8 @@ module OverflowAlignment = {
 
   let toString = x =>
     switch x {
-    | #safe(pa) => "safe " ++ PositionalAlignment.toString(pa)
-    | #unsafe(pa) => "unsafe " ++ PositionalAlignment.toString(pa)
+    | #safe(pa) => "safe " + PositionalAlignment.toString(pa)
+    | #unsafe(pa) => "unsafe " + PositionalAlignment.toString(pa)
     }
 }
 
@@ -1322,7 +1311,7 @@ module Clear = {
     }
 }
 
-module Float = {
+module Float_AtomicTypes = {
   type t = [#left | #right | #none | #inlineStart | #inlineEnd]
 
   let toString = x =>
@@ -1405,7 +1394,7 @@ module ColumnCount = {
   let toString = x =>
     switch x {
     | #auto => "auto"
-    | #count(v) => Js.Int.toString(v)
+    | #count(v) => Int.toString(v)
     }
 }
 
@@ -1443,7 +1432,7 @@ module GridTemplateAreas = {
     switch x {
     | #none => "none"
     | #areas(items) =>
-      String.trim(Belt.Array.reduceU(items, "", (. carry, item) => carry ++ "'" ++ item ++ "' "))
+      String.trim(Array.reduce(items, "", (carry, item) => carry + "'" + item + "' "))
     }
 }
 
@@ -1466,12 +1455,12 @@ module GridArea = {
     switch t {
     | #auto => "auto"
     | #ident(s) => s
-    | #num(i) => string_of_int(i)
-    | #numIdent(i, s) => string_of_int(i) ++ " " ++ s
+    | #num(i) => Int.toString(i)
+    | #numIdent(i, s) => Int.toString(i) + " " + s
     | #span(e) =>
-      "span " ++
+      "span " +
       switch e {
-      | #num(i) => string_of_int(i)
+      | #num(i) => Int.toString(i)
       | #ident(s) => s
       }
     }
@@ -1493,30 +1482,30 @@ module BackdropFilter = {
     | #sepia([#num(int) | #percent(float)])
   ]
 
-  let string_of_percent = p => Js.Float.toString(p) ++ "%"
+  let string_of_percent = p => Float.toString(p) + "%"
 
   let toString = x =>
     switch x {
-    | #blur(#...Length.t as b) => "blur(" ++ Length.toString(b) ++ ")"
-    | #brightness(#num(b)) => "brightness(" ++ string_of_int(b) ++ ")"
-    | #brightness(#percent(b)) => "brightness(" ++ string_of_percent(b) ++ ")"
-    | #contrast(#num(c)) => "contrast(" ++ string_of_int(c) ++ ")"
-    | #contrast(#percent(c)) => "contrast(" ++ string_of_percent(c) ++ ")"
-    | #dropShadow(#num(i)) => "drop-shadow(" ++ string_of_int(i) ++ ")"
-    | #dropShadow(#percent(i)) => "drop-shadow(" ++ string_of_percent(i) ++ ")"
-    | #grayscale(#num(i)) => "grayscale(" ++ string_of_int(i) ++ ")"
-    | #grayscale(#percent(i)) => "grayscale(" ++ string_of_percent(i) ++ ")"
-    | #hueRotate(#...Angle.t as h) => "hue-rotate(" ++ Angle.toString(h) ++ ")"
+    | #blur(#...Length.t as b) => "blur(" + Length.toString(b) + ")"
+    | #brightness(#num(b)) => "brightness(" + Int.toString(b) + ")"
+    | #brightness(#percent(b)) => "brightness(" + string_of_percent(b) + ")"
+    | #contrast(#num(c)) => "contrast(" + Int.toString(c) + ")"
+    | #contrast(#percent(c)) => "contrast(" + string_of_percent(c) + ")"
+    | #dropShadow(#num(i)) => "drop-shadow(" + Int.toString(i) + ")"
+    | #dropShadow(#percent(i)) => "drop-shadow(" + string_of_percent(i) + ")"
+    | #grayscale(#num(i)) => "grayscale(" + Int.toString(i) + ")"
+    | #grayscale(#percent(i)) => "grayscale(" + string_of_percent(i) + ")"
+    | #hueRotate(#...Angle.t as h) => "hue-rotate(" + Angle.toString(h) + ")"
     | #hueRotate(#zero) => "hue-rotate(0deg)"
-    | #invert(#num(i)) => "invert(" ++ string_of_int(i) ++ ")"
-    | #invert(#percent(i)) => "invert(" ++ string_of_percent(i) ++ ")"
+    | #invert(#num(i)) => "invert(" + Int.toString(i) + ")"
+    | #invert(#percent(i)) => "invert(" + string_of_percent(i) + ")"
     | #none => "none"
-    | #opacity(#num(i)) => "opacity(" ++ string_of_int(i) ++ ")"
-    | #opacity(#percent(i)) => "opacity(" ++ string_of_percent(i) ++ ")"
-    | #saturate(#num(i)) => "saturate(" ++ string_of_int(i) ++ ")"
-    | #saturate(#percent(i)) => "saturate(" ++ string_of_percent(i) ++ ")"
-    | #sepia(#num(i)) => "sepia(" ++ string_of_int(i) ++ ")"
-    | #sepia(#percent(i)) => "sepia(" ++ string_of_percent(i) ++ ")"
+    | #opacity(#num(i)) => "opacity(" + Int.toString(i) + ")"
+    | #opacity(#percent(i)) => "opacity(" + string_of_percent(i) + ")"
+    | #saturate(#num(i)) => "saturate(" + Int.toString(i) + ")"
+    | #saturate(#percent(i)) => "saturate(" + string_of_percent(i) + ")"
+    | #sepia(#num(i)) => "sepia(" + Int.toString(i) + ")"
+    | #sepia(#percent(i)) => "sepia(" + string_of_percent(i) + ")"
     }
 }
 
@@ -1764,20 +1753,19 @@ module Gradient = {
 
   let string_of_stops = stops =>
     stops
-    ->Belt.Array.map(((l, c)) => string_of_color(c) ++ " " ++ PercentageLengthCalc.toString(l))
-    ->Js.Array2.joinWith(", ")
+    ->Array.map(((l, c)) => string_of_color(c) + " " + PercentageLengthCalc.toString(l))
+    ->Array.joinUnsafe(", ")
 
   let toString = x =>
     switch x {
     | #linearGradient(angle, stops) =>
-      "linear-gradient(" ++ Angle.toString(angle) ++ ", " ++ string_of_stops(stops) ++ ")"
+      "linear-gradient(" + Angle.toString(angle) + ", " + string_of_stops(stops) + ")"
     | #repeatingLinearGradient(angle, stops) =>
-      "repeating-linear-gradient(" ++ Angle.toString(angle) ++ ", " ++ string_of_stops(stops) ++ ")"
-    | #radialGradient(stops) => "radial-gradient(" ++ string_of_stops(stops) ++ ")"
-    | #repeatingRadialGradient(stops) =>
-      "repeating-radial-gradient(" ++ string_of_stops(stops) ++ ")"
+      "repeating-linear-gradient(" + Angle.toString(angle) + ", " + string_of_stops(stops) + ")"
+    | #radialGradient(stops) => "radial-gradient(" + string_of_stops(stops) + ")"
+    | #repeatingRadialGradient(stops) => "repeating-radial-gradient(" + string_of_stops(stops) + ")"
     | #conicGradient(angle, stops) =>
-      "conic-gradient(from " ++ Angle.toString(angle) ++ ", " ++ string_of_stops(stops) ++ ")"
+      "conic-gradient(from " + Angle.toString(angle) + ", " + string_of_stops(stops) + ")"
     }
 }
 
@@ -1970,9 +1958,9 @@ module Counter = {
     switch x {
     | #counter(counter, style) =>
       switch style {
-      | #unset => "counter(" ++ counter ++ ")"
+      | #unset => "counter(" + counter + ")"
       | #...CounterStyleType.t as t =>
-        "counter(" ++ counter ++ "," ++ CounterStyleType.toString(t) ++ ")"
+        "counter(" + counter + "," + CounterStyleType.toString(t) + ")"
       }
     }
 }
@@ -1987,9 +1975,9 @@ module Counters = {
     switch x {
     | #counters(name, separator, style) =>
       switch style {
-      | #unset => "counters(" ++ name ++ ",\"" ++ separator ++ "\")"
+      | #unset => "counters(" + name + ",\"" + separator + "\")"
       | #...CounterStyleType.t as s =>
-        "counters(" ++ name ++ ",\"" ++ separator ++ "\"," ++ CounterStyleType.toString(s) ++ ")"
+        "counters(" + name + ",\"" + separator + "\"," + CounterStyleType.toString(s) + ")"
       }
     }
 }
@@ -2002,7 +1990,7 @@ module CounterIncrement = {
   let toString = x =>
     switch x {
     | #none => "none"
-    | #increment(name, value) => name ++ " " ++ string_of_int(value)
+    | #increment(name, value) => name + " " + Int.toString(value)
     }
 }
 
@@ -2014,7 +2002,7 @@ module CounterReset = {
   let toString = x =>
     switch x {
     | #none => "none"
-    | #reset(name, value) => name ++ " " ++ string_of_int(value)
+    | #reset(name, value) => name + " " + Int.toString(value)
     }
 }
 
@@ -2026,7 +2014,7 @@ module CounterSet = {
   let toString = x =>
     switch x {
     | #none => "none"
-    | #set(name, value) => name ++ " " ++ string_of_int(value)
+    | #set(name, value) => name + " " + Int.toString(value)
     }
 }
 
@@ -2050,11 +2038,11 @@ module Content = {
     | #closeQuote => "close-quote"
     | #noOpenQuote => "no-open-quote"
     | #noCloseQuote => "no-close-quote"
-    | #attr(name) => "attr(" ++ name ++ ")"
+    | #attr(name) => "attr(" + name + ")"
     | #text(value) =>
-      switch value->Js.String2.get(0) {
+      switch value->String.getUnsafe(0) {
       | "\"" | "'" => value
-      | _ => "\"" ++ value ++ "\""
+      | _ => "\"" + value + "\""
       }
     }
 }

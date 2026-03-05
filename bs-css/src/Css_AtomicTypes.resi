@@ -896,7 +896,7 @@ module Clear: {
 /**
  https://developer.mozilla.org/docs/Web/CSS/float
  */
-module Float: {
+module Float_AtomicTypes: {
   type t = [#left | #right | #none | #inlineStart | #inlineEnd]
 
   let toString: t => string

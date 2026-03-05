@@ -1,8 +1,8 @@
 open Jest
 open EmptyCssImpl.Legacy
 
-let toBeJson = (e, x) => toBe(e, x->Js.Json.stringifyAny)
-let r = x => toJson(list{x})->Js.Json.stringifyAny /* simple rule for more readable tests */
+let toBeJson = (e, x) => toBe(e, x->JSON.stringifyAny)
+let r = x => toJson(list{x})->JSON.stringifyAny /* simple rule for more readable tests */
 
 describe("Fill", () =>
   test("test values", () => {

@@ -9,27 +9,27 @@ module type MakeResult = {
   type styleEncoding
   type renderer
 
-  let insertRule: (. string) => unit
-  let renderRule: (. renderer, string) => unit
+  let insertRule: string => unit
+  let renderRule: (renderer, string) => unit
 
-  let global: (. string, array<rule>) => unit
-  let renderGlobal: (. renderer, string, array<rule>) => unit
+  let global: (string, array<rule>) => unit
+  let renderGlobal: (renderer, string, array<rule>) => unit
 
-  let style: (. array<rule>) => styleEncoding
+  let style: array<rule> => styleEncoding
 
-  let merge: (. array<styleEncoding>) => styleEncoding
-  let merge2: (. styleEncoding, styleEncoding) => styleEncoding
-  let merge3: (. styleEncoding, styleEncoding, styleEncoding) => styleEncoding
-  let merge4: (. styleEncoding, styleEncoding, styleEncoding, styleEncoding) => styleEncoding
+  let merge: array<styleEncoding> => styleEncoding
+  let merge2: (styleEncoding, styleEncoding) => styleEncoding
+  let merge3: (styleEncoding, styleEncoding, styleEncoding) => styleEncoding
+  let merge4: (styleEncoding, styleEncoding, styleEncoding, styleEncoding) => styleEncoding
 
-  let keyframes: (. array<(int, array<rule>)>) => animationName
-  let renderKeyframes: (. renderer, array<(int, array<rule>)>) => animationName
+  let keyframes: array<(int, array<rule>)> => animationName
+  let renderKeyframes: (renderer, array<(int, array<rule>)>) => animationName
 }
 
 module Make: (C: Css_Core.CssImplementationIntf) =>
 (MakeResult with type styleEncoding := C.styleEncoding and type renderer := C.renderer)
 
-let toJson: array<rule> => Js.Json.t
+let toJson: array<rule> => JSON.t
 
 let important: rule => rule
 let label: string => rule
@@ -454,7 +454,7 @@ let flexWrap: [< Types.FlexWrap.t | Types.Var.t | Types.Cascading.t] => rule
  The element is removed from the normal flow of the page, though still remaining a part of the flow
  (in contrast to absolute positioning).
  */
-let float: [< Types.Float.t | Types.Var.t | Types.Cascading.t] => rule
+let float: [< Types.Float_AtomicTypes.t | Types.Var.t | Types.Cascading.t] => rule
 
 /**
  The font-family CSS property specifies a prioritized list of one or more font family names and/or generic family names
@@ -1095,8 +1095,8 @@ let zIndex: int => rule
  selectors
  ********* */
 
-let selector: (. string, array<rule>) => rule
-let media: (. string, array<rule>) => rule
+let selector: (string, array<rule>) => rule
+let media: (string, array<rule>) => rule
 
 /*
  Pseudo-classes selectors
@@ -1385,7 +1385,6 @@ let selection: array<rule> => rule
 /**
  Combinators selectors
  */
-
 /**
  The > combinator selects nodes that are direct children of the first element.
  */
@@ -1829,7 +1828,6 @@ let fontFace: (
 /**
  * Transition
  */
-
 module Transition: {
   type t = [#value(string)]
 
@@ -1857,7 +1855,6 @@ let transitions: array<[Transition.t]> => rule
 /**
  * Animation
  */
-
 module Animation: {
   type t = [#value(string)]
 

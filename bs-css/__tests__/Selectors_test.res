@@ -3,9 +3,9 @@ open EmptyCssImpl.Legacy
 
 let ruleSelector = display(block)
 let ruleJson = {"display": "block"}
-let toBe = (e, x) => Jest.toBe(e, x->Js.Json.stringifyAny)
+let toBe = (e, x) => Jest.toBe(e, x->JSON.stringifyAny)
 let expect = x =>
-  Jest.expect(toJson(list{x})->Js.Json.stringifyAny) /* simple rule for more readable tests */
+  Jest.expect(toJson(list{x})->JSON.stringifyAny) /* simple rule for more readable tests */
 
 describe("Pseudo classes", () => {
   test("test selectors that have no parameters", () => {
