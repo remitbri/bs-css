@@ -1025,13 +1025,55 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rescript/react@npm:^0.10.0":
-  version: 0.10.3
-  resolution: "@rescript/react@npm:0.10.3"
+"@rescript/darwin-arm64@npm:12.2.0":
+  version: 12.2.0
+  resolution: "@rescript/darwin-arm64@npm:12.2.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rescript/darwin-x64@npm:12.2.0":
+  version: 12.2.0
+  resolution: "@rescript/darwin-x64@npm:12.2.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rescript/linux-arm64@npm:12.2.0":
+  version: 12.2.0
+  resolution: "@rescript/linux-arm64@npm:12.2.0"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rescript/linux-x64@npm:12.2.0":
+  version: 12.2.0
+  resolution: "@rescript/linux-x64@npm:12.2.0"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rescript/react@npm:^0.14.0":
+  version: 0.14.1
+  resolution: "@rescript/react@npm:0.14.1"
   peerDependencies:
-    react: ">=16.8.1"
-    react-dom: ">=16.8.1"
-  checksum: 10/feb9ab6114bcc6ea3a8e0893cfb7685455c3cff01e86b527396ad37696a42d93760a96eb501525389004b4dbad429d3376f5bafa4301d463689f5d01dc436b92
+    react: ">=19.1.0"
+    react-dom: ">=19.1.0"
+  checksum: 10/071053c681913a78e93c1985ab94bb27dc9ebb71b7dada61286ae48ae2d922b23e6d8f5366002ce60df7e05b6e6305e0ac038108620ee1c6e6770a00b88c42db
+  languageName: node
+  linkType: hard
+
+"@rescript/runtime@npm:12.2.0":
+  version: 12.2.0
+  resolution: "@rescript/runtime@npm:12.2.0"
+  checksum: 10/285c40966d7b4c38e9cc3a4e0752e0e1d0c5558e6a3593248516523a7b2fb608f27f87bf7523062d098422f03c7a7c4d257985a31093a44993628e894ea96521
+  languageName: node
+  linkType: hard
+
+"@rescript/win32-x64@npm:12.2.0":
+  version: 12.2.0
+  resolution: "@rescript/win32-x64@npm:12.2.0"
+  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -2041,11 +2083,11 @@ __metadata:
   resolution: "bs-css-dom@workspace:bs-css-dom"
   dependencies:
     bs-css: "npm:18.1.1"
-    rescript: "npm:^9.0.0"
+    rescript: "npm:^12.0.0"
   peerDependencies:
-    "@rescript/react": ^0.10.0
-    react: ^17.0.0
-    react-dom: ^17.0.0
+    "@rescript/react": ^0.14.0
+    react: ^19.0.0
+    react-dom: ^19.0.0
   languageName: unknown
   linkType: soft
 
@@ -2056,7 +2098,7 @@ __metadata:
     "@emotion/cache": "npm:^11.0.0"
     "@emotion/css": "npm:^11.0.0"
     bs-css: "npm:18.1.1"
-    rescript: "npm:^9.0.0"
+    rescript: "npm:^12.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2065,10 +2107,10 @@ __metadata:
   resolution: "bs-css-fela@workspace:bs-css-fela"
   dependencies:
     bs-css: "npm:18.1.1"
-    fela: "npm:^11.0.0"
-    react: "npm:^17.0.0"
-    react-fela: "npm:^11.0.0"
-    rescript: "npm:^9.0.0"
+    fela: "npm:^12.2.0"
+    react: "npm:^19.0.0"
+    react-fela: "npm:^12.2.0"
+    rescript: "npm:^12.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2077,7 +2119,7 @@ __metadata:
   resolution: "bs-css@workspace:bs-css"
   dependencies:
     jest: "npm:^30.0.0"
-    rescript: "npm:^9.0.0"
+    rescript: "npm:^12.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2532,16 +2574,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dev-server-dom@workspace:dev-server-dom"
   dependencies:
-    "@rescript/react": "npm:^0.10.0"
+    "@rescript/react": "npm:^0.14.0"
     "@rspack/cli": "npm:^1.4.0"
     "@rspack/core": "npm:^1.4.0"
     "@rspack/plugin-react-refresh": "npm:^1.4.0"
     bs-css: "npm:^18.0.0"
     bs-css-dom: "npm:^6.0.0"
-    react: "npm:^17.0.0"
-    react-dom: "npm:^17.0.0"
-    react-refresh: "npm:^0.17.0"
-    rescript: "npm:^9.0.0"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    react-refresh: "npm:^0.18.0"
+    rescript: "npm:^12.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2549,16 +2591,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dev-server-emotion@workspace:dev-server-emotion"
   dependencies:
-    "@rescript/react": "npm:^0.10.0"
+    "@rescript/react": "npm:^0.14.0"
     "@rspack/cli": "npm:^1.4.0"
     "@rspack/core": "npm:^1.4.0"
     "@rspack/plugin-react-refresh": "npm:^1.4.0"
     bs-css: "npm:^18.0.0"
     bs-css-emotion: "npm:^7.0.0"
-    react: "npm:^17.0.0"
-    react-dom: "npm:^17.0.0"
-    react-refresh: "npm:^0.17.0"
-    rescript: "npm:^9.0.0"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    react-refresh: "npm:^0.18.0"
+    rescript: "npm:^12.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2566,15 +2608,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dev-server-fela@workspace:dev-server-fela"
   dependencies:
-    "@rescript/react": "npm:^0.10.0"
+    "@rescript/react": "npm:^0.14.0"
     bs-css: "npm:^18.0.0"
     bs-css-fela: "npm:^5.0.0"
     esbuild: "npm:^0.9.0"
-    fela: "npm:^11.0.0"
-    react: "npm:^17.0.0"
-    react-dom: "npm:^17.0.0"
-    react-fela: "npm:^11.0.0"
-    rescript: "npm:^9.0.0"
+    fela: "npm:^12.2.0"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    react-fela: "npm:^12.2.0"
+    rescript: "npm:^12.0.0"
   languageName: unknown
   linkType: soft
 
@@ -2935,67 +2977,67 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fela-bindings@npm:^11.7.0":
-  version: 11.7.0
-  resolution: "fela-bindings@npm:11.7.0"
+"fela-bindings@npm:^12.2.1":
+  version: 12.2.1
+  resolution: "fela-bindings@npm:12.2.1"
   dependencies:
     fast-loops: "npm:^1.0.0"
-    fela-dom: "npm:^11.7.0"
-    fela-tools: "npm:^11.7.0"
-    react-addons-shallow-compare: "npm:^15.6.2"
+    fela-dom: "npm:^12.2.1"
+    fela-tools: "npm:^12.2.1"
+    react-addons-shallow-compare: "npm:^15.6.3"
     shallow-equal: "npm:^1.0.0"
   peerDependencies:
     fela: "*"
-  checksum: 10/eeb538370ff2e34e7f023bc0d5adc20ac10db03fed5d223a9ba2f02a8d27faa4a2c298c39058e449d13e4ada6cd1b85de74ce050c15b35921f9493017f6353e0
+  checksum: 10/950598a3cc4db84e12b6f5dfbb544b7b508b3e1ac7fa379b83d4878067b0fd10793d3405d069e1e32646887dec0016a2e77d2a373af186d0af93cb86152d27a3
   languageName: node
   linkType: hard
 
-"fela-dom@npm:^11.7.0":
-  version: 11.7.0
-  resolution: "fela-dom@npm:11.7.0"
+"fela-dom@npm:^12.2.1":
+  version: 12.2.1
+  resolution: "fela-dom@npm:12.2.1"
   dependencies:
     css-in-js-utils: "npm:^3.0.0"
     fast-loops: "npm:^1.0.1"
-    fela-utils: "npm:^11.7.0"
+    fela-utils: "npm:^12.2.1"
     sort-css-media-queries: "npm:^1.4.3"
-  checksum: 10/ea5668c7b05878e5346a7a904ea4458e8d24841bcf55fb3bac79cde6808ed5dde4c34dce61ef6c92ccf015a23e007289ea9dbca01e118d190b72f720551ac26c
+  checksum: 10/f6ffc67c1213fefb5560337c44d16afdb337890310cf36e2e4c215b85f0c6abc9979e668713eb4c8048168b6d4c8e676e3a28f9f13f5b2c3312156baccf2f5c2
   languageName: node
   linkType: hard
 
-"fela-tools@npm:^11.7.0":
-  version: 11.7.0
-  resolution: "fela-tools@npm:11.7.0"
+"fela-tools@npm:^12.2.1":
+  version: 12.2.1
+  resolution: "fela-tools@npm:12.2.1"
   dependencies:
     css-in-js-utils: "npm:^3.0.0"
     fast-loops: "npm:^1.0.0"
-    fela: "npm:^11.7.0"
-    fela-utils: "npm:^11.7.0"
+    fela: "npm:^12.2.1"
+    fela-utils: "npm:^12.2.1"
   peerDependencies:
-    fela: ^11.2.0
-  checksum: 10/311afc8133f9dec18705f202c1c390ec1d2d3a172443196e598f954d2aa734c7713d691182fe9e72366f65185ae7e9ca443aa2d8dfc7cf80fe689b26b805fb09
+    fela: ">=11"
+  checksum: 10/9d65dc39c1cae0d3bb3b51d3b7096e40f48bc1120440cc0cac51db401ad7c00ab2f38e6069fb57aeab8478647c9f7175cde51de8e61df1adbeadd3a1deb6aa2e
   languageName: node
   linkType: hard
 
-"fela-utils@npm:^11.7.0":
-  version: 11.7.0
-  resolution: "fela-utils@npm:11.7.0"
+"fela-utils@npm:^12.2.1":
+  version: 12.2.1
+  resolution: "fela-utils@npm:12.2.1"
   dependencies:
     css-in-js-utils: "npm:^3.0.0"
     fast-loops: "npm:^1.0.0"
-  checksum: 10/2a29397d9cc804269f1b21b50d5465e9027e6cc2176ff3583d9839eb5580b0878ea3af0f3f2e9e5a59fb70c0318f72c3c44d1878b313b4358724495976f7558c
+  checksum: 10/dbea11d9c10d899cc78057875cb7b6cb6db986b19577768b6839b276c38fd396d3987d59f488df21d16b9b6c3fd6ce8c55e173b2025a9b53d1eb96569e6e9bbb
   languageName: node
   linkType: hard
 
-"fela@npm:^11.0.0, fela@npm:^11.7.0":
-  version: 11.7.0
-  resolution: "fela@npm:11.7.0"
+"fela@npm:^12.2.0, fela@npm:^12.2.1":
+  version: 12.2.1
+  resolution: "fela@npm:12.2.1"
   dependencies:
     css-in-js-utils: "npm:^3.0.0"
     csstype: "npm:^3.0.5"
     fast-loops: "npm:^1.0.0"
-    fela-utils: "npm:^11.7.0"
+    fela-utils: "npm:^12.2.1"
     isobject: "npm:^3.0.1"
-  checksum: 10/a5fa9f9b8c19768d61e0ab10628665f26067c9a41c5751c0652be8467b1a5c93512f7de2289ecdfbf172216b23f3bac6a24eb9a7d32a08566547cc987faf166f
+  checksum: 10/945e285cf561b878beea8dddd993144ba8b719a6c6db05d148a87f533dcea6103021a2e8e6190d124f5f52039fe3dc208b1d8bcdcdcf6e67ee5701a1a59e5111
   languageName: node
   linkType: hard
 
@@ -4249,7 +4291,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -5000,7 +5042,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-addons-shallow-compare@npm:^15.6.2":
+"react-addons-shallow-compare@npm:^15.6.3":
   version: 15.6.3
   resolution: "react-addons-shallow-compare@npm:15.6.3"
   dependencies:
@@ -5009,30 +5051,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "react-dom@npm:17.0.2"
+"react-dom@npm:^19.0.0":
+  version: 19.2.4
+  resolution: "react-dom@npm:19.2.4"
   dependencies:
-    loose-envify: "npm:^1.1.0"
-    object-assign: "npm:^4.1.1"
-    scheduler: "npm:^0.20.2"
+    scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: 17.0.2
-  checksum: 10/0b3836131a64da8b1c2c852cc28b09c21a738c33c7a8d6021ac20d5619d753c8ee5fff8f97c95f2fc33053e44c2cbce9657453e21c55900164e6e0c3e955e826
+    react: ^19.2.4
+  checksum: 10/ec17721a8cb131bc33480a9f738bc5bbfe4bd11b11cf69f3f473605346578a329ad26ceef6ef0761ea67a4b455803407dd7ed4ba3d8a5abd2cee8c32d221e498
   languageName: node
   linkType: hard
 
-"react-fela@npm:^11.0.0":
-  version: 11.7.0
-  resolution: "react-fela@npm:11.7.0"
+"react-fela@npm:^12.2.0":
+  version: 12.2.1
+  resolution: "react-fela@npm:12.2.1"
   dependencies:
-    fela-bindings: "npm:^11.7.0"
-    fela-dom: "npm:^11.7.0"
+    fela-bindings: "npm:^12.2.1"
+    fela-dom: "npm:^12.2.1"
     prop-types: "npm:^15.5.8"
   peerDependencies:
-    fela: ">= 11.3.1"
-    react: ">= 16.3.0"
-  checksum: 10/7135e2f17aa1f1c8a18b36b0b0ffd41ae82f8697aadfac1abcfbaf104bb35858bacd411b5f7ec6dd1d6d5d90dcdc8df4bab2d096eecbf6f0262d27f103df9e1b
+    fela: ">=11.3"
+    react: "*"
+  checksum: 10/a5542617959f7c6646ae58066010eeff709a0ac595b399d16b65b2592bb9d8a313e4152a896d4cd94dee8bf6c04a6762208883cd1a56490d3819224951fd8649
   languageName: node
   linkType: hard
 
@@ -5050,20 +5090,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-refresh@npm:^0.17.0":
-  version: 0.17.0
-  resolution: "react-refresh@npm:0.17.0"
-  checksum: 10/5e94f07d43bb1cfdc9b0c6e0c8c73e754005489950dcff1edb53aa8451d1d69a47b740b195c7c80fb4eb511c56a3585dc55eddd83f0097fb5e015116a1460467
+"react-refresh@npm:^0.18.0":
+  version: 0.18.0
+  resolution: "react-refresh@npm:0.18.0"
+  checksum: 10/504c331c19776bf8320c23bad7f80b3a28de03301ed7523b0dd21d3f02bf2b53bbdd5aa52469b187bc90f358614b2ba303c088a0765c95f4f0a68c43a7d67b1d
   languageName: node
   linkType: hard
 
-"react@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "react@npm:17.0.2"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-    object-assign: "npm:^4.1.1"
-  checksum: 10/ece60c31c1d266d132783aaaffa185d2e4c9b4db144f853933ec690cee1e0600c8929a1dd0a9e79323eea8e2df636c9a06d40f6cfdc9f797f65225433e67f707
+"react@npm:^19.0.0":
+  version: 19.2.4
+  resolution: "react@npm:19.2.4"
+  checksum: 10/18179fe217f67eb2d0bc61cd04e7ad3c282ea09a1dface7eacd71816f62609f4bbf566c447c704335284deb8397b00bca084e0cd60e6f437279a7498e2d0bfe0
   languageName: node
   linkType: hard
 
@@ -5132,15 +5169,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rescript@npm:^9.0.0":
-  version: 9.1.4
-  resolution: "rescript@npm:9.1.4"
+"rescript@npm:^12.0.0":
+  version: 12.2.0
+  resolution: "rescript@npm:12.2.0"
+  dependencies:
+    "@rescript/darwin-arm64": "npm:12.2.0"
+    "@rescript/darwin-x64": "npm:12.2.0"
+    "@rescript/linux-arm64": "npm:12.2.0"
+    "@rescript/linux-x64": "npm:12.2.0"
+    "@rescript/runtime": "npm:12.2.0"
+    "@rescript/win32-x64": "npm:12.2.0"
+  dependenciesMeta:
+    "@rescript/darwin-arm64":
+      optional: true
+    "@rescript/darwin-x64":
+      optional: true
+    "@rescript/linux-arm64":
+      optional: true
+    "@rescript/linux-x64":
+      optional: true
+    "@rescript/win32-x64":
+      optional: true
   bin:
-    bsc: bsc
-    bsrefmt: bsrefmt
-    bstracing: lib/bstracing
-    rescript: rescript
-  checksum: 10/6db107c46be77368c99561d904791ced0b2e1dcf58110455314531e66f3ae6a96e157e4d7fc844ae5293735ab9cba9af8ab3351e2bdf0525693ace7a566acb14
+    bsc: cli/bsc.js
+    bstracing: cli/bstracing.js
+    rescript: cli/rescript.js
+    rescript-legacy: cli/rescript-legacy.js
+    rescript-tools: cli/rescript-tools.js
+  checksum: 10/cf2d1646c1b0fb9d34b4d2cfc2a9180c506829a35bf9b7bdabc129844461decad71723759d1753eebf4bdb8fc92c0f90ce1c62114c6ae7aa8a16c589454c0b25
   languageName: node
   linkType: hard
 
@@ -5241,13 +5297,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:^0.20.2":
-  version: 0.20.2
-  resolution: "scheduler@npm:0.20.2"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-    object-assign: "npm:^4.1.1"
-  checksum: 10/898917fa475386953d998add9107c04bf2c335eee86172833995dee126d12a68bee3c29edbd61fa0bcbcb8ee511c422eaab23b86b02f95aab26ecfaed8df5e64
+"scheduler@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "scheduler@npm:0.27.0"
+  checksum: 10/eab3c3a8373195173e59c147224fc30dabe6dd453f248f5e610e8458512a5a2ee3a06465dc400ebfe6d35c9f5b7f3bb6b2e41c88c86fd177c25a73e7286a1e06
   languageName: node
   linkType: hard
 

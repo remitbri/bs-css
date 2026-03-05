@@ -2,32 +2,31 @@
   "name": "bs-css",
   "version": "18.1.1",
   "description": "Css types",
+  "type": "module",
   "scripts": {
     "re:clean": "rescript clean",
-    "re:build": "rescript build",
-    "re:watch": "rescript build -w",
-    "test": "jest",
-    "testw": "jest --watchAll"
+    "re:build": "rescript",
+    "re:watch": "rescript watch",
+    "test": "node --experimental-vm-modules ../node_modules/jest/bin/jest.js",
+    "testw": "node --experimental-vm-modules ../node_modules/jest/bin/jest.js --watchAll"
   },
   "keywords": [
-    "bucklescript",
     "rescript",
-    "reasonML",
     "css"
   ],
   "author": "Andreas Møller <andreas@sentia.ai>",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reasonml-labs/bs-css.git"
+    "url": "git+https://github.com/giraud/bs-css.git"
   },
   "devDependencies": {
     "jest": "^30.0.0",
-    "rescript": "^9.0.0"
+    "rescript": "^12.0.0"
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "<rootDir>/lib/js/__tests__/helpers"
+      "<rootDir>/lib/es6/__tests__/helpers"
     ]
   }
 }

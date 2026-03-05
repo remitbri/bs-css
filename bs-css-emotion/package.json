@@ -2,23 +2,22 @@
   "name": "bs-css-emotion",
   "version": "7.1.1",
   "description": "bs-css bindings for Emotion",
+  "type": "module",
   "scripts": {
     "re:clean": "rescript clean",
-    "re:build": "rescript build",
-    "re:watch": "rescript build -w"
+    "re:build": "rescript",
+    "re:watch": "rescript watch"
   },
   "keywords": [
     "emotion",
-    "bucklescript",
     "rescript",
-    "reasonML",
     "css"
   ],
   "author": "Hervé Giraud <giraud.contact@yahoo.fr>",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reasonml-labs/bs-css.git"
+    "url": "git+https://github.com/giraud/bs-css.git"
   },
   "dependencies": {
     "@emotion/cache": "^11.0.0",
@@ -26,6 +25,6 @@
     "bs-css": "18.1.1"
   },
   "devDependencies": {
-    "rescript": "^9.0.0"
+    "rescript": "^12.0.0"
   }
 }

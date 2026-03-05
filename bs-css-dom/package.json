@@ -2,33 +2,32 @@
   "name": "bs-css-dom",
   "version": "6.1.1",
   "description": "bs-css bindings for React DOM",
+  "type": "module",
   "scripts": {
     "re:clean": "rescript clean",
-    "re:build": "rescript build",
-    "re:watch": "rescript build -w",
+    "re:build": "rescript",
+    "re:watch": "rescript watch",
     "serve": "../node_modules/.bin/esbuild ./lib/js/example/App.js --servedir=example --outdir=example/js --bundle --loader:.js=jsx --define:process.env.NODE_ENV=\\\"development\\\""
   },
   "keywords": [
-    "bucklescript",
     "rescript",
-    "reasonML",
     "css"
   ],
   "author": "Hervé Giraud <giraud.contact@yahoo.fr>",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reasonml-labs/bs-css.git"
+    "url": "git+https://github.com/giraud/bs-css.git"
   },
   "dependencies": {
     "bs-css": "18.1.1"
   },
   "peerDependencies": {
-    "@rescript/react": "^0.10.0",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "@rescript/react": "^0.14.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "rescript": "^9.0.0"
+    "rescript": "^12.0.0"
   }
 }
