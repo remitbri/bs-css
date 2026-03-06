@@ -9,11 +9,8 @@ module Styles = {
     (),
   )
 
-  let section = style(. [
-    selector(.
-      "& > h1",
-      [fontFamily(#custom(arialNarrow)), fontWeight(#num(300)), marginTop(#zero)],
-    ),
+  let section = style([
+    selector("& > h1", [fontFamily(#custom(arialNarrow)), fontWeight(#num(300)), marginTop(#zero)]),
     position(#relative),
     background(hex("f5f5f5")),
     margin(px(20)),
@@ -25,14 +22,15 @@ module Styles = {
     ]),
   ])
 
-  let rowLayout = style(. [display(#flex), flexDirection(#row), flexWrap(#wrap)])
+  let rowLayout = style([display(#flex), flexDirection(#row), flexWrap(#wrap)])
 }
 
 @react.component
 let make = (~name, ~children) => {
   let {css, _} = CssReact.useFela()
 
-  <section className={css(. Styles.section)}>
-    <h1> {name->React.string} </h1> <div className={css(. Styles.rowLayout)}> children </div>
+  <section className={css(Styles.section)}>
+    <h1> {name->React.string} </h1>
+    <div className={css(Styles.rowLayout)}> children </div>
   </section>
 }
