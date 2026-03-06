@@ -1,4 +1,4 @@
 switch ReactDOM.querySelector("#app") {
 | None => ()
-| Some(dom) => ReactDOM.render(<Demo />, dom)
+| Some(dom) => dom->ReactDOM.Client.createRoot->ReactDOM.Client.Root.render(<Demo />)
 }
