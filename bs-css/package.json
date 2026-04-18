@@ -10,6 +10,7 @@
   "scripts": {
     "re:clean": "rescript clean",
     "re:build": "rescript",
+    "re:format": "rescript format",
     "re:watch": "rescript watch",
     "test": "node --experimental-vm-modules ../node_modules/jest/bin/jest.js",
     "testw": "node --experimental-vm-modules ../node_modules/jest/bin/jest.js --watchAll"

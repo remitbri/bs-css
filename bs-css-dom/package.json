@@ -10,6 +10,7 @@
   "scripts": {
     "re:clean": "rescript clean",
     "re:build": "rescript",
+    "re:format": "rescript format",
     "re:watch": "rescript watch",
     "serve": "../node_modules/.bin/esbuild ./lib/js/example/App.js --servedir=example --outdir=example/js --bundle --loader:.js=jsx --define:process.env.NODE_ENV=\\\"development\\\""
   },

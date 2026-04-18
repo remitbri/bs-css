@@ -10,6 +10,7 @@
   "scripts": {
     "re:clean": "rescript clean",
     "re:build": "rescript",
+    "re:format": "rescript format",
     "re:watch": "rescript watch"
   },
   "keywords": [

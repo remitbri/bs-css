@@ -12,6 +12,7 @@
     "re:clean": "rescript clean",
     "re:build": "rescript",
     "re:watch": "rescript watch",
+    "re:format": "rescript format",
     "dev": "rspack dev"
   },
   "author": "Hervé Giraud <giraud.contact@yahoo.fr>",
