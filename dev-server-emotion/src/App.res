@@ -1,8 +1,8 @@
 open CssJs
 
-global(. "html, body", [margin(zero), padding(zero), backgroundColor(lavender)])
+global("html, body", [margin(zero), padding(zero), backgroundColor(lavender)])
 
 switch ReactDOM.querySelector("#app") {
 | None => ()
-| Some(dom) => ReactDOM.render(<Demo />, dom)
+| Some(dom) => dom->ReactDOM.Client.createRoot->ReactDOM.Client.Root.render(<Demo />)
 }

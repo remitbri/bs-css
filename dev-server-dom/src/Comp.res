@@ -10,8 +10,8 @@ module Section = {
       (),
     )
 
-    let section = style(. [
-      selector(.
+    let section = style([
+      selector(
         "& > h1",
         [fontFamily(#custom(arialNarrow)), fontWeight(#num(300)), marginTop(#zero)],
       ),
@@ -26,13 +26,14 @@ module Section = {
       ]),
     ])
 
-    let rowLayout = style(. [display(#flex), flexDirection(#row), flexWrap(#wrap)])
+    let rowLayout = style([display(#flex), flexDirection(#row), flexWrap(#wrap)])
   }
 
   @react.component
   let make = (~name, ~children) =>
     <section style=Styles.section>
-      <h1> {name->React.string} </h1> <div style=Styles.rowLayout> children </div>
+      <h1> {name->React.string} </h1>
+      <div style=Styles.rowLayout> children </div>
     </section>
 }
 
@@ -47,10 +48,7 @@ let redBox = [
 module RedBox = {
   @react.component
   let make = (~rules=?, ~children=?) =>
-    <div
-      style={style(.
-        rules->Belt.Option.mapWithDefaultU(redBox, (. r) => redBox->Belt.Array.concat(r)),
-      )}>
+    <div style={style(rules->Option.mapOr(redBox, r => redBox->Array.concat(r)))}>
       {switch children {
       | None => React.null
       | Some(c) => c

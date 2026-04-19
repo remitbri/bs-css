@@ -4,7 +4,7 @@ module RendererProvider = {
     "RendererProvider"
 }
 
-type css = (. Js.Json.t) => string
+type css = JSON.t => string
 type theme
 
 type felaHook = {

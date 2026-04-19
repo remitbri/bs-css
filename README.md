@@ -1,12 +1,12 @@
 # bs-css
 
-Statically typed DSL for writing css in reason and rescript.
+Statically typed DSL for writing css in ReScript.
 
 The bs-css library contains type css core definitions, it has different implementations:
 
 - bs-css-emotion is a typed interface to [Emotion](https://github.com/emotion-js/emotion)
 - bs-css-fela is a typed interface to [Fela](https://github.com/robinweser/fela) (react)
-- bs-css-dom is a typed interface to `ReactDOMRe.Style.t` (reason-react)
+- bs-css-dom is a typed interface to `ReactDOM.Style.t` (rescript-react)
 
 If you know another implementation that can be added, send a link in an issue or create a PR.
 
@@ -18,7 +18,7 @@ or
 yarn add bs-css bs-css-emotion
 ```
 
-In your `bsconfig.json`, include `"bs-css"` and `"bs-css-emotion"` in the `bs-dependencies`.
+In your `rescript.json`, include `"bs-css"` and `"bs-css-emotion"` in the `dependencies`.
 
 You can replace `bs-css-emotion` with `bs-css-dom` in the above instructions if you prefer
 to use React styles, or `bs-css-fela` for a different runtime.
@@ -59,7 +59,7 @@ module Styles = {
   ])
 
   let actionButton = disabled =>
-    style(. [
+    style([
       background(disabled ? darkgray : white),
       color(black),
       border(px(1), solid, black),
@@ -82,8 +82,8 @@ You can define global css rules with `global`
 ```rescript
 open CssJs
 
-global(. "body", [margin(px(0))])
-global(. "h1, h2, h3", [color(rgb(33, 33, 33))])
+global("body", [margin(px(0))])
+global("h1, h2, h3", [color(rgb(33, 33, 33))])
 ```
 
 **Keyframes**
@@ -99,7 +99,7 @@ let bounce = keyframes(. [
   (100, [transform(scale(1.0, 1.0)), opacity(1.0)]),
 ])
 
-let styles = style(. [
+let styles = style([
   animationName(bounce),
   animationDuration(2000),
   width(px(50)),
@@ -117,7 +117,7 @@ For some CSS parameters (like setting padding on an input field), one needs to u
 
 ```css
 input[type="text"] {
-   padding:20px;
+  padding: 20px;
 }
 ```
 
@@ -125,7 +125,7 @@ The `selector` function can be used:
 
 ```rescript
 open CssJs
-let styles = style(. [selector("input[type='text']", [padding(px(20))])])
+let styles = style([selector("input[type='text']", [padding(px(20))])])
 ```
 
 ### Merging styles
@@ -159,7 +159,7 @@ let media2 = [
     color(red)
   ])
 ]
-let mergedStyles = style(. Belt.Array.concatMany([base, overrides, media1, media2]))
+let mergedStyles = style(Belt.Array.concatMany([base, overrides, media1, media2]))
 ```
 
 generates the following:
@@ -184,14 +184,14 @@ As you can see both properties from `base` are overwritten (as opposed to overri
 
 `merge` safely merges styles by name. Uses [Emotion’s `cx` method](https://emotion.sh/docs/cx).
 
-```reason
+```rescript
 open CssJs
 
-let mergedStyles = merge(. [
-  style(. [padding(px(0)), fontSize(px(1))]),
-  style(. [padding(px(20)), fontSize(px(24)), color(blue)]),
-  style(. [media("(max-width: 768px)", [padding(px(10))])]),
-  style(. [media("(max-width: 768px)", [fontSize(px(16)), color(red)])]),
+let mergedStyles = merge([
+  style([padding(px(0)), fontSize(px(1))]),
+  style([padding(px(20)), fontSize(px(24)), color(blue)]),
+  style([media("(max-width: 768px)", [padding(px(10))])]),
+  style([media("(max-width: 768px)", [fontSize(px(16)), color(red)])]),
 ])
 ```
 
@@ -230,7 +230,11 @@ let renderer = createRenderer()
 switch ReactDOM.querySelector("#app") {
 | None => ()
 | Some(dom) =>
-  ReactDOM.render(<CssReact.RendererProvider renderer> ... </CssReact.RendererProvider>, dom)
+  dom
+  ->ReactDOM.Client.createRoot
+  ->ReactDOM.Client.Root.render(
+    <CssReact.RendererProvider renderer> ... </CssReact.RendererProvider>
+  )
 }
 ```
 
@@ -245,7 +249,7 @@ module Styles = {
   */
   open CssJs
 
-  let card = style(. [
+  let card = style([
     display(flexBox),
     flexDirection(column),
     alignItems(stretch),
@@ -257,7 +261,7 @@ module Styles = {
     padding(Theme.basePadding),
   ])
 
-  let title = style(. [
+  let title = style([
     fontSize(rem(1.5)),
     lineHeight(#abs(1.25)),
     color(Theme.textColor),
@@ -265,7 +269,7 @@ module Styles = {
   ])
 
   let actionButton = disabled =>
-    style(. [
+    style([
       background(disabled ? darkgray : white),
       color(black),
       border(px(1), solid, black),
@@ -277,9 +281,9 @@ module Styles = {
 let make = () => {
   let {css, _} = CssReact.useFela()
 
-  <div className={css(. Styles.card)}>
-    <h1 className={css(. Styles.title)}> {React.string("Hello")} </h1>
-    <button className={css(. Styles.actionButton(false))} />
+  <div className={css(Styles.card)}>
+    <h1 className={css(Styles.title)}> {React.string("Hello")} </h1>
+    <button className={css(Styles.actionButton(false))} />
   </div>
 }
 ```
@@ -288,12 +292,12 @@ let make = () => {
 
 You can define global css rules with `global`
 
-```rescript       
+```rescript
 open CssJs
 let renderer = createRenderer()
 
-renderGlobal(. renderer, "body", [margin(px(0))])
-renderGlobal(. renderer, "h1, h2, h3", [color(rgb(33, 33, 33))])
+renderGlobal(renderer, "body", [margin(px(0))])
+renderGlobal(renderer, "h1, h2, h3", [color(rgb(33, 33, 33))])
 ```
 
 ## Usage for bs-css-dom
@@ -305,7 +309,7 @@ module Styles = {
   // Open the Css module, so we can access the style properties below without prefixing them with Css
   open CssJs
 
-  let card = style(. [
+  let card = style([
     display(flexBox),
     flexDirection(column),
     alignItems(stretch),
@@ -317,10 +321,10 @@ module Styles = {
     padding(Theme.basePadding),
   ])
 
-  let title = style(. [fontSize(rem(1.5)), color(Theme.textColor), marginBottom(Theme.basePadding)])
+  let title = style([fontSize(rem(1.5)), color(Theme.textColor), marginBottom(Theme.basePadding)])
 
   let actionButton = disabled =>
-    style(. [
+    style([
       background(disabled ? darkgray : white),
       color(black),
       border(px(1), solid, black),

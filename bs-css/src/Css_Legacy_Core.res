@@ -10,20 +10,20 @@ type rec rule =
 let rec ruleToDict = (dict, rule) => {
   switch rule {
   | D(name, value) if name == "content" =>
-    dict->Js.Dict.set(name, Js.Json.string(value == "" ? "\"\"" : value))
-  | D(name, value) => dict->Js.Dict.set(name, Js.Json.string(value))
-  | S(name, ruleset) => dict->Js.Dict.set(name, toJson(ruleset))
-  | PseudoClass(name, ruleset) => dict->Js.Dict.set(":" ++ name, toJson(ruleset))
+    dict->Dict.set(name, JSON.Encode.string(value == "" ? "\"\"" : value))
+  | D(name, value) => dict->Dict.set(name, JSON.Encode.string(value))
+  | S(name, ruleset) => dict->Dict.set(name, toJson(ruleset))
+  | PseudoClass(name, ruleset) => dict->Dict.set(":" + name, toJson(ruleset))
   | PseudoClassParam(name, param, ruleset) =>
-    dict->Js.Dict.set(":" ++ (name ++ ("(" ++ (param ++ ")"))), toJson(ruleset))
+    dict->Dict.set(":" + name + "(" + param + ")", toJson(ruleset))
   }
   dict
 }
 
-and toJson = rules => rules->Belt.List.reduce(Js.Dict.empty(), ruleToDict)->Js.Json.object_
+and toJson = rules => rules->List.reduce(Dict.make(), ruleToDict)->JSON.Encode.object
 
 let addStop = (dict, (stop, rules)) => {
-  Js.Dict.set(dict, Js.Int.toString(stop) ++ "%", toJson(rules))
+  Dict.set(dict, Int.toString(stop) + "%", toJson(rules))
   dict
 }
 
@@ -37,7 +37,7 @@ module type MakeResult = {
   let renderRule: (renderer, string) => unit
 
   let global: (string, list<rule>) => unit
-  let renderGlobal: (. renderer, string, list<rule>) => unit
+  let renderGlobal: (renderer, string, list<rule>) => unit
 
   let style: list<rule> => styleEncoding
 
@@ -56,24 +56,23 @@ module Make = (CssImpl: Css_Core.CssImplementationIntf): (
   type styleEncoding
   type renderer
 
-  let insertRule = css => CssImpl.injectRaw(. css)
-  let renderRule = (renderer, css) => CssImpl.renderRaw(. renderer, css)
+  let insertRule = css => CssImpl.injectRaw(css)
+  let renderRule = (renderer, css) => CssImpl.renderRaw(renderer, css)
 
-  let global = (selector, rules) => CssImpl.injectRules(. selector, toJson(rules))
-  let renderGlobal = (. renderer, selector, rules) =>
-    CssImpl.renderRules(. renderer, selector, toJson(rules))
+  let global = (selector, rules) => CssImpl.injectRules(selector, toJson(rules))
+  let renderGlobal = (renderer, selector, rules) =>
+    CssImpl.renderRules(renderer, selector, toJson(rules))
 
-  let style = rules => CssImpl.make(. rules->toJson)
+  let style = rules => CssImpl.make(rules->toJson)
 
-  let merge = styles => CssImpl.mergeStyles(. styles->Belt.List.toArray)
+  let merge = styles => CssImpl.mergeStyles(styles->List.toArray)
   let merge2 = (s, s2) => merge(list{s, s2})
   let merge3 = (s, s2, s3) => merge(list{s, s2, s3})
   let merge4 = (s, s2, s3, s4) => merge(list{s, s2, s3, s4})
 
-  let keyframes = frames =>
-    CssImpl.makeKeyframes(. frames->Belt.List.reduce(Js.Dict.empty(), addStop))
+  let keyframes = frames => CssImpl.makeKeyframes(frames->List.reduce(Dict.make(), addStop))
   let renderKeyframes = (renderer, frames) =>
-    CssImpl.renderKeyframes(. renderer, frames->Belt.List.reduce(Js.Dict.empty(), addStop))
+    CssImpl.renderKeyframes(renderer, frames->List.reduce(Dict.make(), addStop))
 }
 
 module Calc = {
@@ -84,18 +83,18 @@ module Calc = {
 }
 
 let join = (strings, separator) => {
-  let rec run = (strings, acc) =>
+  let rec run: (list<string>, string) => string = (strings, acc) =>
     switch strings {
     | list{} => acc
-    | list{x} => acc ++ x
-    | list{x, ...xs} => run(xs, acc ++ (x ++ separator))
+    | list{x} => acc + x
+    | list{x, ...xs} => run(xs, acc + (x + separator))
     }
   run(strings, "")
 }
 
 module Converter = {
   let string_of_stops = stops =>
-    stops->Belt.List.map(((l, c)) => Color.toString(c) ++ (" " ++ Length.toString(l)))->join(", ")
+    stops->List.map(((l, c)) => Color.toString(c) + " " + Length.toString(l))->join(", ")
 
   let string_of_time = t => Time.toString(t)
 
@@ -160,7 +159,7 @@ include Converter
 
 let important = v =>
   switch v {
-  | D(name, value) => D(name, value ++ " !important")
+  | D(name, value) => D(name, value + " !important")
   | S(_, _)
   | PseudoClass(_, _)
   | PseudoClassParam(_, _, _) => v
@@ -229,7 +228,7 @@ let backfaceVisibility = x => D(
 
 let backdropFilter = x => D(
   "backdropFilter",
-  x->Belt.List.map(Types.BackdropFilter.toString)->join(", "),
+  x->List.map(Types.BackdropFilter.toString)->join(", "),
 )
 
 let backgroundAttachment = x => D(
@@ -286,12 +285,12 @@ let string_of_background_position = x =>
     switch h {
     | #...BackgroundPosition.X.t as h => BackgroundPosition.X.toString(h)
     | #...Length.t as l => Length.toString(l)
-    } ++
-    (" " ++
+    } +
+    " " +
     switch v {
     | #...BackgroundPosition.Y.t as v => BackgroundPosition.Y.toString(v)
     | #...Length.t as l => Length.toString(l)
-    })
+    }
   | #...Length.t as l => Length.toString(l)
   | #...Var.t as va => Var.toString(va)
   | #...Cascading.t as c => Cascading.toString(c)
@@ -301,16 +300,18 @@ let backgroundPosition = x => D("backgroundPosition", string_of_background_posit
 
 let backgroundPositions = bp => D(
   "backgroundPosition",
-  bp->Belt.List.map(string_of_background_position)->join(", "),
+  bp->List.map(string_of_background_position)->join(", "),
 )
 
 let backgroundPosition4 = (~x, ~offsetX, ~y, ~offsetY) => D(
   "backgroundPosition",
-  BackgroundPosition.X.toString(x) ++
-  (" " ++
-  (Length.toString(offsetX) ++
-  (" " ++
-  (BackgroundPosition.Y.toString(y) ++ (" " ++ Length.toString(offsetY)))))),
+  BackgroundPosition.X.toString(x) +
+  " " +
+  Length.toString(offsetX) +
+  " " +
+  BackgroundPosition.Y.toString(y) +
+  " " +
+  Length.toString(offsetY),
 )
 
 let backgroundRepeat = x => D(
@@ -318,7 +319,7 @@ let backgroundRepeat = x => D(
   switch x {
   | #...BackgroundRepeat.t as br => BackgroundRepeat.toString(br)
   | #hv(#...BackgroundRepeat.horizontal as h, #...BackgroundRepeat.vertical as v) =>
-    BackgroundRepeat.toString(h) ++ (" " ++ BackgroundRepeat.toString(v))
+    BackgroundRepeat.toString(h) + " " + BackgroundRepeat.toString(v)
   | #...Var.t as va => Var.toString(va)
   | #...Cascading.t as c => Cascading.toString(c)
   },
@@ -331,12 +332,12 @@ let string_of_mask_position = x =>
     switch h {
     | #...MaskPosition.X.t as h => MaskPosition.X.toString(h)
     | #...Length.t as l => Length.toString(l)
-    } ++
-    (" " ++
+    } +
+    " " +
     switch v {
     | #...MaskPosition.Y.t as v => MaskPosition.Y.toString(v)
     | #...Length.t as l => Length.toString(l)
-    })
+    }
   | #...Length.t as l => Length.toString(l)
   | #...Var.t as va => Var.toString(va)
   | #...Cascading.t as c => Cascading.toString(c)
@@ -344,7 +345,7 @@ let string_of_mask_position = x =>
 
 let maskPosition = x => D("maskPosition", string_of_mask_position(x))
 
-let maskPositions = mp => D("maskPosition", mp->Belt.List.map(string_of_mask_position)->join(", "))
+let maskPositions = mp => D("maskPosition", mp->List.map(string_of_mask_position)->join(", "))
 
 let borderBottomColor = x => D("borderBottomColor", string_of_color(x))
 
@@ -438,19 +439,19 @@ let columnCount = x => D(
 )
 
 let contentRule = x => D("content", string_of_content(x))
-let contentRules = xs => D("content", xs->Belt.List.map(string_of_content)->join(" "))
+let contentRules = xs => D("content", xs->List.map(string_of_content)->join(" "))
 
 let counterIncrement = x => D("counterIncrement", string_of_counter_increment(x))
 let countersIncrement = xs => D(
   "counterIncrement",
-  xs->Belt.List.map(string_of_counter_increment)->join(" "),
+  xs->List.map(string_of_counter_increment)->join(" "),
 )
 
 let counterReset = x => D("counterReset", string_of_counter_reset(x))
-let countersReset = xs => D("counterReset", xs->Belt.List.map(string_of_counter_reset)->join(" "))
+let countersReset = xs => D("counterReset", xs->List.map(string_of_counter_reset)->join(" "))
 
 let counterSet = x => D("counterSet", string_of_counter_set(x))
-let countersSet = xs => D("counterSet", xs->Belt.List.map(string_of_counter_set)->join(" "))
+let countersSet = xs => D("counterSet", xs->List.map(string_of_counter_set)->join(" "))
 
 let cursor = x => D("cursor", Cursor.toString(x))
 
@@ -481,7 +482,7 @@ let flex = x => D(
   "flex",
   switch x {
   | #...Flex.t as f => Flex.toString(f)
-  | #num(n) => Js.Float.toString(n)
+  | #num(n) => Float.toString(n)
   },
 )
 
@@ -494,9 +495,9 @@ let flexDirection = x => D(
   },
 )
 
-let flexGrow = x => D("flexGrow", Js.Float.toString(x))
+let flexGrow = x => D("flexGrow", Float.toString(x))
 
-let flexShrink = x => D("flexShrink", Js.Float.toString(x))
+let flexShrink = x => D("flexShrink", Float.toString(x))
 
 let flexWrap = x => D(
   "flexWrap",
@@ -510,7 +511,7 @@ let flexWrap = x => D(
 let float = x => D(
   "float",
   switch x {
-  | #...Float.t as f => Float.toString(f)
+  | #...Float_AtomicTypes.t as f => Float_AtomicTypes.toString(f)
   | #...Var.t as va => Var.toString(va)
   | #...Cascading.t as c => Cascading.toString(c)
   },
@@ -525,7 +526,7 @@ let fontFamily = x => D(
   },
 )
 
-let fontFamilies = xs => D("fontFamily", xs->Belt.List.map(FontFamilyName.toString)->join(", "))
+let fontFamilies = xs => D("fontFamily", xs->List.map(FontFamilyName.toString)->join(", "))
 
 let fontSize = x => D(
   "fontSize",
@@ -572,19 +573,13 @@ let gridAutoFlow = x => D(
   },
 )
 
-let gridColumn = (start, end') => D(
-  "gridColumn",
-  Js.Int.toString(start) ++ (" / " ++ Js.Int.toString(end')),
-)
+let gridColumn = (start, end') => D("gridColumn", Int.toString(start) + " / " + Int.toString(end'))
 
-let gridColumnStart = n => D("gridColumnStart", Js.Int.toString(n))
+let gridColumnStart = n => D("gridColumnStart", Int.toString(n))
 
-let gridColumnEnd = n => D("gridColumnEnd", Js.Int.toString(n))
+let gridColumnEnd = n => D("gridColumnEnd", Int.toString(n))
 
-let gridRow = (start, end') => D(
-  "gridRow",
-  Js.Int.toString(start) ++ (" / " ++ Js.Int.toString(end')),
-)
+let gridRow = (start, end') => D("gridRow", Int.toString(start) + " / " + Int.toString(end'))
 
 let gap = x => D("gap", string_of_gap(x))
 let columnGap = x => D("columnGap", string_of_gap(x))
@@ -594,14 +589,11 @@ let gridGap = x => D("gridGap", string_of_gap(x))
 let gridColumnGap = x => D("gridColumnGap", string_of_gap(x))
 let gridRowGap = x => D("gridRowGap", string_of_gap(x))
 
-let gap2 = (~rowGap, ~columnGap) => D(
-  "gap",
-  string_of_gap(rowGap) ++ (" " ++ string_of_gap(columnGap)),
-)
+let gap2 = (~rowGap, ~columnGap) => D("gap", string_of_gap(rowGap) + " " + string_of_gap(columnGap))
 
-let gridRowEnd = n => D("gridRowEnd", Js.Int.toString(n))
+let gridRowEnd = n => D("gridRowEnd", Int.toString(n))
 
-let gridRowStart = n => D("gridRowStart", Js.Int.toString(n))
+let gridRowStart = n => D("gridRowStart", Int.toString(n))
 
 let height = x => D(
   "height",
@@ -661,14 +653,14 @@ let lineHeight = x => D(
 
 let listStyle = (style, position, image) => D(
   "listStyle",
-  ListStyleType.toString(style) ++
-  (" " ++
-  (ListStylePosition.toString(position) ++
-  (" " ++
+  ListStyleType.toString(style) +
+  " " +
+  ListStylePosition.toString(position) +
+  " " +
   switch image {
   | #...ListStyleImage.t as lsi => ListStyleImage.toString(lsi)
   | #...Url.t as u => Url.toString(u)
-  }))),
+  },
 )
 
 let listStyleImage = x => D(
@@ -708,18 +700,20 @@ let string_of_margin = x =>
   }
 
 let margin = x => D("margin", string_of_margin(x))
-let margin2 = (~v, ~h) => D("margin", string_of_margin(v) ++ (" " ++ string_of_margin(h)))
+let margin2 = (~v, ~h) => D("margin", string_of_margin(v) + " " + string_of_margin(h))
 let margin3 = (~top, ~h, ~bottom) => D(
   "margin",
-  string_of_margin(top) ++ (" " ++ (string_of_margin(h) ++ (" " ++ string_of_margin(bottom)))),
+  string_of_margin(top) + " " + string_of_margin(h) + " " + string_of_margin(bottom),
 )
 let margin4 = (~top, ~right, ~bottom, ~left) => D(
   "margin",
-  string_of_margin(top) ++
-  (" " ++
-  (string_of_margin(right) ++
-  (" " ++
-  (string_of_margin(bottom) ++ (" " ++ string_of_margin(left)))))),
+  string_of_margin(top) +
+  " " +
+  string_of_margin(right) +
+  " " +
+  string_of_margin(bottom) +
+  " " +
+  string_of_margin(left),
 )
 let marginLeft = x => D("marginLeft", string_of_margin(x))
 let marginRight = x => D("marginRight", string_of_margin(x))
@@ -781,13 +775,11 @@ let objectFit = x => D(
 
 let objectPosition = x => D("objectPosition", string_of_background_position(x))
 
-let opacity = x => D("opacity", Js.Float.toString(x))
+let opacity = x => D("opacity", Float.toString(x))
 
 let outline = (size, style, color) => D(
   "outline",
-  Length.toString(size) ++
-  (" " ++
-  (OutlineStyle.toString(style) ++ (" " ++ string_of_color(color)))),
+  Length.toString(size) + " " + OutlineStyle.toString(style) + " " + string_of_color(color),
 )
 let outlineColor = x => D("outlineColor", string_of_color(x))
 let outlineOffset = x => D("outlineOffset", Length.toString(x))
@@ -810,21 +802,25 @@ let overflowWrap = x => D(
 let padding = x => D("padding", PercentageLengthCalc.toString(x))
 let padding2 = (~v, ~h) => D(
   "padding",
-  PercentageLengthCalc.toString(v) ++ (" " ++ PercentageLengthCalc.toString(h)),
+  PercentageLengthCalc.toString(v) + " " + PercentageLengthCalc.toString(h),
 )
 let padding3 = (~top, ~h, ~bottom) => D(
   "padding",
-  PercentageLengthCalc.toString(top) ++
-  (" " ++
-  (PercentageLengthCalc.toString(h) ++ (" " ++ PercentageLengthCalc.toString(bottom)))),
+  PercentageLengthCalc.toString(top) +
+  " " +
+  PercentageLengthCalc.toString(h) +
+  " " +
+  PercentageLengthCalc.toString(bottom),
 )
 let padding4 = (~top, ~right, ~bottom, ~left) => D(
   "padding",
-  PercentageLengthCalc.toString(top) ++
-  (" " ++
-  (PercentageLengthCalc.toString(right) ++
-  (" " ++
-  (PercentageLengthCalc.toString(bottom) ++ (" " ++ PercentageLengthCalc.toString(left)))))),
+  PercentageLengthCalc.toString(top) +
+  " " +
+  PercentageLengthCalc.toString(right) +
+  " " +
+  PercentageLengthCalc.toString(bottom) +
+  " " +
+  PercentageLengthCalc.toString(left),
 )
 
 let paddingBottom = x => D("paddingBottom", PercentageLengthCalc.toString(x))
@@ -847,12 +843,12 @@ let perspectiveOrigin = (x, y) => D(
   switch x {
   | #...Perspective.t as p => Perspective.toString(p)
   | #...Length.t as l => Length.toString(l)
-  } ++
-  (" " ++
+  } +
+  " " +
   switch y {
   | #...Perspective.t as p => Perspective.toString(p)
   | #...Length.t as l => Length.toString(l)
-  }),
+  },
 )
 
 let pointerEvents = x => D(
@@ -995,16 +991,13 @@ let transform = x => D(
   },
 )
 
-let transforms = x => D("transform", x->Belt.List.map(Transform.toString)->join(" "))
+let transforms = x => D("transform", x->List.map(Transform.toString)->join(" "))
 
-let transformOrigin = (x, y) => D(
-  "transformOrigin",
-  Length.toString(x) ++ (" " ++ Length.toString(y)),
-)
+let transformOrigin = (x, y) => D("transformOrigin", Length.toString(x) + " " + Length.toString(y))
 
 let transformOrigin3d = (x, y, z) => D(
   "transformOrigin",
-  Length.toString(x) ++ (" " ++ (Length.toString(y) ++ (" " ++ (Length.toString(z) ++ " ")))),
+  Length.toString(x) + " " + Length.toString(y) + " " + Length.toString(z) + " ",
 )
 
 let transformBox = x => D("transformBox", TransformBox.toString(x))
@@ -1126,11 +1119,11 @@ let wordSpacing = x => D(
 
 let wordWrap = overflowWrap
 
-let zIndex = x => D("zIndex", Js.Int.toString(x))
+let zIndex = x => D("zIndex", Int.toString(x))
 
 /* Selectors */
 
-let media = (query, rules) => S("@media " ++ query, rules)
+let media = (query, rules) => S("@media " + query, rules)
 let selector = (selector, rules) => S(selector, rules)
 let pseudoClass = (selector, rules) => PseudoClass(selector, rules)
 
@@ -1168,8 +1161,8 @@ module Nth = {
     switch x {
     | #odd => "odd"
     | #even => "even"
-    | #n(x) => Js.Int.toString(x) ++ "n"
-    | #add(x, y) => Js.Int.toString(x) ++ ("n+" ++ Js.Int.toString(y))
+    | #n(x) => Int.toString(x) + "n"
+    | #add(x, y) => Int.toString(x) + ("n+" + Int.toString(y))
     }
 }
 let nthChild = (x, rules) => PseudoClassParam("nth-child", Nth.toString(x), rules)
@@ -1196,7 +1189,7 @@ let firstLetter = rules => selector("::first-letter", rules)
 let firstLine = rules => selector("::first-line", rules)
 let selection = rules => selector("::selection", rules)
 
-let child = (x, rules) => selector(" > " ++ x, rules)
+let child = (x, rules) => selector(" > " + x, rules)
 let children = rules => selector(" > *", rules)
 let directSibling = rules => selector(" + ", rules)
 let placeholder = rules => selector("::placeholder", rules)
@@ -1347,7 +1340,7 @@ let radialGradient = Gradient.radialGradient
 let repeatingRadialGradient = Gradient.repeatingRadialGradient
 let conicGradient = Gradient.conicGradient
 
-let areas = items => GridTemplateAreas.areas(Belt.List.toArray(items))
+let areas = items => GridTemplateAreas.areas(List.toArray(items))
 let ident = GridArea.ident
 let numIdent = GridArea.numIdent
 
@@ -1522,14 +1515,14 @@ let manipulation = #manipulation
 
 let flex3 = (~grow, ~shrink, ~basis) => D(
   "flex",
-  Js.Float.toString(grow) ++
-  (" " ++
-  (Js.Float.toString(shrink) ++
-  (" " ++
+  Float.toString(grow) +
+  " " +
+  Float.toString(shrink) +
+  " " +
   switch basis {
   | #...FlexBasis.t as b => FlexBasis.toString(b)
   | #...Length.t as l => Length.toString(l)
-  }))),
+  },
 )
 let flexBasis = x => D(
   "flexBasis",
@@ -1539,7 +1532,7 @@ let flexBasis = x => D(
   },
 )
 
-let order = x => D("order", Js.Int.toString(x))
+let order = x => D("order", Int.toString(x))
 
 type minmax = [PercentageLengthCalc.t | #minContent | #maxContent | #auto | #fr(float)]
 
@@ -1549,7 +1542,7 @@ let minmaxToJs = x =>
   | #minContent => "min-content"
   | #maxContent => "max-content"
   | #auto => "auto"
-  | #fr(x) => Js.Float.toString(x) ++ "fr"
+  | #fr(x) => Float.toString(x) + "fr"
   }
 
 type trackLength = [
@@ -1567,8 +1560,8 @@ let trackLengthToJs = x =>
   | #auto => "auto"
   | #minContent => "min-content"
   | #maxContent => "max-content"
-  | #fr(x) => Js.Float.toString(x) ++ "fr"
-  | #minmax(a, b) => "minmax(" ++ minmaxToJs(a) ++ "," ++ minmaxToJs(b) ++ ")"
+  | #fr(x) => Float.toString(x) + "fr"
+  | #minmax(a, b) => "minmax(" + minmaxToJs(a) + "," + minmaxToJs(b) + ")"
   }
 
 type gridLength = [trackLength | #repeat(RepeatValue.t, trackLength)]
@@ -1576,22 +1569,22 @@ type gridLength = [trackLength | #repeat(RepeatValue.t, trackLength)]
 let gridLengthToJs = x =>
   switch x {
   | #...PercentageLengthCalc.t as plc => PercentageLengthCalc.toString(plc)
-  | #fr(x) => Js.Float.toString(x) ++ "fr"
+  | #fr(x) => Float.toString(x) + "fr"
   | #auto => "auto"
   | #minContent => "min-content"
   | #maxContent => "max-content"
-  | #minmax(a, b) => "minmax(" ++ minmaxToJs(a) ++ "," ++ minmaxToJs(b) ++ ")"
-  | #repeat(n, x) => "repeat(" ++ RepeatValue.toString(n) ++ ", " ++ trackLengthToJs(x) ++ ")"
+  | #minmax(a, b) => "minmax(" + minmaxToJs(a) + "," + minmaxToJs(b) + ")"
+  | #repeat(n, x) => "repeat(" + RepeatValue.toString(n) + ", " + trackLengthToJs(x) + ")"
   }
 
 let gridTemplateColumns = dimensions => D(
   "gridTemplateColumns",
-  dimensions->Belt.List.map(gridLengthToJs)->Belt.List.toArray->Js.Array2.joinWith(" "),
+  dimensions->List.map(gridLengthToJs)->List.toArray->Array.joinUnsafe(" "),
 )
 
 let gridTemplateRows = dimensions => D(
   "gridTemplateRows",
-  dimensions->Belt.List.map(gridLengthToJs)->Belt.List.toArray->Js.Array2.joinWith(" "),
+  dimensions->List.map(gridLengthToJs)->List.toArray->Array.joinUnsafe(" "),
 )
 
 let gridAutoColumns = dimensions => D("gridAutoColumns", trackLengthToJs(dimensions))
@@ -1607,20 +1600,22 @@ let gridArea = s => D(
   },
 )
 
-let gridArea2 = (s, s2) => D("gridArea", GridArea.toString(s) ++ (" / " ++ GridArea.toString(s2)))
+let gridArea2 = (s, s2) => D("gridArea", GridArea.toString(s) + " / " + GridArea.toString(s2))
 
 let gridArea3 = (s, s2, s3) => D(
   "gridArea",
-  GridArea.toString(s) ++ (" / " ++ (GridArea.toString(s2) ++ (" / " ++ GridArea.toString(s3)))),
+  GridArea.toString(s) + " / " + GridArea.toString(s2) + " / " + GridArea.toString(s3),
 )
 
 let gridArea4 = (s, s2, s3, s4) => D(
   "gridArea",
-  GridArea.toString(s) ++
-  (" / " ++
-  (GridArea.toString(s2) ++
-  (" / " ++
-  (GridArea.toString(s3) ++ (" / " ++ GridArea.toString(s4)))))),
+  GridArea.toString(s) +
+  " / " +
+  GridArea.toString(s2) +
+  " / " +
+  GridArea.toString(s3) +
+  " / " +
+  GridArea.toString(s4),
 )
 
 let gridTemplateAreas = l => D(
@@ -1651,28 +1646,31 @@ type filter = [
 
 let string_of_filter = x =>
   switch x {
-  | #blur(v) => "blur(" ++ (Length.toString(v) ++ ")")
-  | #brightness(v) => "brightness(" ++ (Js.Float.toString(v) ++ "%)")
-  | #contrast(v) => "contrast(" ++ (Js.Float.toString(v) ++ "%)")
+  | #blur(v) => "blur(" + Length.toString(v) + ")"
+  | #brightness(v) => "brightness(" + Float.toString(v) + "%)"
+  | #contrast(v) => "contrast(" + Float.toString(v) + "%)"
   | #dropShadow(a, b, c, d) =>
-    "drop-shadow(" ++
-    (Length.toString(a) ++
-    (" " ++
-    (Length.toString(b) ++
-    (" " ++ (Length.toString(c) ++ (" " ++ (Color.toString(d) ++ ")")))))))
-  | #grayscale(v) => "grayscale(" ++ (Js.Float.toString(v) ++ "%)")
-  | #hueRotate(v) => "hue-rotate(" ++ (Angle.toString(v) ++ ")")
-  | #invert(v) => "invert(" ++ (Js.Float.toString(v) ++ "%)")
-  | #opacity(v) => "opacity(" ++ (Js.Float.toString(v) ++ "%)")
-  | #saturate(v) => "saturate(" ++ (Js.Float.toString(v) ++ "%)")
-  | #sepia(v) => "sepia(" ++ (Js.Float.toString(v) ++ "%)")
+    "drop-shadow(" +
+    Length.toString(a) +
+    " " +
+    Length.toString(b) +
+    " " +
+    Length.toString(c) +
+    " " +
+    Color.toString(d) + ")"
+  | #grayscale(v) => "grayscale(" + Float.toString(v) + "%)"
+  | #hueRotate(v) => "hue-rotate(" + Angle.toString(v) + ")"
+  | #invert(v) => "invert(" + Float.toString(v) + "%)"
+  | #opacity(v) => "opacity(" + Float.toString(v) + "%)"
+  | #saturate(v) => "saturate(" + Float.toString(v) + "%)"
+  | #sepia(v) => "sepia(" + Float.toString(v) + "%)"
   | #none => "none"
   | #...Url.t as u => Url.toString(u)
   | #...Var.t as va => Var.toString(va)
   | #...Cascading.t as c => Cascading.toString(c)
   }
 
-let filter = x => D("filter", x->Belt.List.map(string_of_filter)->join(" "))
+let filter = x => D("filter", x->List.map(string_of_filter)->join(" "))
 
 module Shadow = {
   type value<'a> = string
@@ -1682,22 +1680,26 @@ module Shadow = {
 
   let box = (~x=zero, ~y=zero, ~blur=zero, ~spread=zero, ~inset=false, color) =>
     #shadow(
-      Length.toString(x) ++
-      (" " ++
-      (Length.toString(y) ++
-      (" " ++
-      (Length.toString(blur) ++
-      (" " ++
-      (Length.toString(spread) ++
-      (" " ++
-      (string_of_color(color) ++ (inset ? " inset" : ""))))))))),
+      Length.toString(x) +
+      " " +
+      Length.toString(y) +
+      " " +
+      Length.toString(blur) +
+      " " +
+      Length.toString(spread) +
+      " " +
+      string_of_color(color) + (inset ? " inset" : ""),
     )
 
   let text = (~x=zero, ~y=zero, ~blur=zero, color) =>
     #shadow(
-      Length.toString(x) ++
-      (" " ++
-      (Length.toString(y) ++ (" " ++ (Length.toString(blur) ++ (" " ++ string_of_color(color)))))),
+      Length.toString(x) +
+      " " +
+      Length.toString(y) +
+      " " +
+      Length.toString(blur) +
+      " " +
+      string_of_color(color),
     )
 
   let toString: t<'a> => string = x =>
@@ -1716,7 +1718,7 @@ let boxShadow = x => D(
   },
 )
 
-let boxShadows = x => D("boxShadow", x->Belt.List.map(Shadow.toString)->join(", "))
+let boxShadows = x => D("boxShadow", x->List.map(Shadow.toString)->join(", "))
 
 let string_of_border_style = x =>
   switch x {
@@ -1727,42 +1729,32 @@ let string_of_border_style = x =>
 
 let border = (px, style, color) => D(
   "border",
-  Length.toString(px) ++
-  (" " ++
-  (string_of_border_style(style) ++ (" " ++ string_of_color(color)))),
+  Length.toString(px) + " " + string_of_border_style(style) + " " + string_of_color(color),
 )
 let borderStyle = x => D("borderStyle", string_of_border_style(x))
 
 let borderLeft = (px, style, color) => D(
   "borderLeft",
-  Length.toString(px) ++
-  (" " ++
-  (string_of_border_style(style) ++ (" " ++ string_of_color(color)))),
+  Length.toString(px) + " " + string_of_border_style(style) + " " + string_of_color(color),
 )
 let borderLeftStyle = x => D("borderLeftStyle", string_of_border_style(x))
 
 let borderRight = (px, style, color) => D(
   "borderRight",
-  Length.toString(px) ++
-  (" " ++
-  (string_of_border_style(style) ++ (" " ++ string_of_color(color)))),
+  Length.toString(px) + " " + string_of_border_style(style) + " " + string_of_color(color),
 )
 
 let borderRightStyle = x => D("borderRightStyle", string_of_border_style(x))
 let borderTop = (px, style, color) => D(
   "borderTop",
-  Length.toString(px) ++
-  (" " ++
-  (string_of_border_style(style) ++ (" " ++ string_of_color(color)))),
+  Length.toString(px) + " " + string_of_border_style(style) + " " + string_of_color(color),
 )
 
 let borderTopStyle = x => D("borderTopStyle", string_of_border_style(x))
 
 let borderBottom = (px, style, color) => D(
   "borderBottom",
-  Length.toString(px) ++
-  (" " ++
-  (string_of_border_style(style) ++ (" " ++ string_of_color(color)))),
+  Length.toString(px) + " " + string_of_border_style(style) + " " + string_of_color(color),
 )
 
 let borderBottomStyle = x => D("borderBottomStyle", string_of_border_style(x))
@@ -1780,7 +1772,7 @@ let background = x => D(
 let backgrounds = x => D(
   "background",
   x
-  ->Belt.List.map(item =>
+  ->List.map(item =>
     switch item {
     | #...Color.t as c => Color.toString(c)
     | #...Url.t as u => Url.toString(u)
@@ -1794,7 +1786,7 @@ let backgrounds = x => D(
 let backgroundSize = x => D(
   "backgroundSize",
   switch x {
-  | #size(x, y) => Length.toString(x) ++ (" " ++ Length.toString(y))
+  | #size(x, y) => Length.toString(x) + " " + Length.toString(y)
   | #auto => "auto"
   | #cover => "cover"
   | #contain => "contain"
@@ -1810,33 +1802,33 @@ let fontFace = (
   ~sizeAdjust=?,
   (),
 ) => {
-  let fontStyle = Js.Option.map((. value) => FontStyle.toString(value), fontStyle)
+  let fontStyle = fontStyle->Option.map(value => FontStyle.toString(value))
   let src =
     src
-    ->Belt.List.map(x =>
+    ->List.map(x =>
       switch x {
       | #localUrl(value) => `local("${value}")`
       | #url(value) => `url("${value}")`
       }
     )
-    ->Belt.List.toArray
-    ->Js.Array2.joinWith(", ")
+    ->List.toArray
+    ->Array.joinUnsafe(", ")
 
-  let fontStyle = Belt.Option.mapWithDefault(fontStyle, "", s => "font-style: " ++ (s ++ ";"))
-  let fontWeight = Belt.Option.mapWithDefault(fontWeight, "", w =>
-    "font-weight: " ++
+  let fontStyle = Option.mapOr(fontStyle, "", s => "font-style: " + (s + ";"))
+  let fontWeight = Option.mapOr(fontWeight, "", w =>
+    "font-weight: " +
     (switch w {
     | #...FontWeight.t as f => FontWeight.toString(f)
     | #...Var.t as va => Var.toString(va)
     | #...Cascading.t as c => Cascading.toString(c)
-    } ++
+    } +
     ";")
   )
-  let fontDisplay = Belt.Option.mapWithDefault(fontDisplay, "", f =>
-    "font-display: " ++ (FontDisplay.toString(f) ++ ";")
+  let fontDisplay = Option.mapOr(fontDisplay, "", f =>
+    "font-display: " + (FontDisplay.toString(f) + ";")
   )
-  let sizeAdjust = Belt.Option.mapWithDefault(sizeAdjust, "", s =>
-    "size-adjust: " ++ Types.Percentage.toString(s) ++ ";"
+  let sizeAdjust = Option.mapOr(sizeAdjust, "", s =>
+    "size-adjust: " + Types.Percentage.toString(s) + ";"
   )
 
   `@font-face {
@@ -1872,7 +1864,7 @@ let textShadow = x => D(
   },
 )
 
-let textShadows = x => D("textShadow", x->Belt.List.map(Shadow.toString)->join(", "))
+let textShadows = x => D("textShadow", x->List.map(Shadow.toString)->join(", "))
 
 let transformStyle = x => D(
   "transformStyle",
@@ -1891,11 +1883,13 @@ module Transition = {
 
   let shorthand = (~duration=#ms(0.), ~delay=#ms(0.), ~timingFunction=#ease, property) =>
     #value(
-      string_of_time(duration) ++
-      (" " ++
-      (TimingFunction.toString(timingFunction) ++
-      (" " ++
-      (string_of_time(delay) ++ (" " ++ property))))),
+      string_of_time(duration) +
+      " " +
+      TimingFunction.toString(timingFunction) +
+      " " +
+      string_of_time(delay) +
+      " " +
+      property,
     )
 
   let toString = x =>
@@ -1906,7 +1900,7 @@ module Transition = {
 
 let transitionValue = x => D("transition", Transition.toString(x))
 
-let transitionList = x => D("transition", x->Belt.List.map(Transition.toString)->join(", "))
+let transitionList = x => D("transition", x->List.map(Transition.toString)->join(", "))
 let transitions = transitionList
 
 let transition = (~duration=?, ~delay=?, ~timingFunction=?, property) =>
@@ -1937,21 +1931,21 @@ module Animation = {
     name,
   ) =>
     #value(
-      name ++
-      (" " ++
-      (string_of_time(duration) ++
-      (" " ++
-      (TimingFunction.toString(timingFunction) ++
-      (" " ++
-      (string_of_time(delay) ++
-      (" " ++
-      (AnimationIterationCount.toString(iterationCount) ++
-      (" " ++
-      (AnimationDirection.toString(direction) ++
-      (" " ++
-      (AnimationFillMode.toString(fillMode) ++
-      (" " ++
-      AnimationPlayState.toString(playState)))))))))))))),
+      name +
+      " " +
+      string_of_time(duration) +
+      " " +
+      TimingFunction.toString(timingFunction) +
+      " " +
+      string_of_time(delay) +
+      " " +
+      AnimationIterationCount.toString(iterationCount) +
+      " " +
+      AnimationDirection.toString(direction) +
+      " " +
+      AnimationFillMode.toString(fillMode) +
+      " " +
+      AnimationPlayState.toString(playState),
     )
 
   let toString = x =>
@@ -1985,14 +1979,13 @@ let animation = (
     ),
   )
 
-let animations = x => D("animation", x->Belt.List.map(Animation.toString)->join(", "))
+let animations = x => D("animation", x->List.map(Animation.toString)->join(", "))
 
 let animationName = x => D("animationName", x)
 
 /**
  * SVG
  */
-
 module SVG = {
   let fill = x => D(
     "fill",
@@ -2003,7 +1996,7 @@ module SVG = {
     | #...Types.Url.t as u => Types.Url.toString(u)
     },
   )
-  let fillOpacity = opacity => D("fillOpacity", Js.Float.toString(opacity))
+  let fillOpacity = opacity => D("fillOpacity", Float.toString(opacity))
   let fillRule = x => D(
     "fillRule",
     switch x {
@@ -2016,12 +2009,12 @@ module SVG = {
     "strokeDasharray",
     switch x {
     | #none => "none"
-    | #dasharray(a) => a->Belt.List.map(string_of_dasharray)->join(" ")
+    | #dasharray(a) => a->List.map(string_of_dasharray)->join(" ")
     },
   )
   let strokeWidth = x => D("strokeWidth", Length.toString(x))
-  let strokeOpacity = opacity => D("strokeOpacity", Js.Float.toString(opacity))
-  let strokeMiterlimit = x => D("strokeMiterlimit", Js.Float.toString(x))
+  let strokeOpacity = opacity => D("strokeOpacity", Float.toString(opacity))
+  let strokeMiterlimit = x => D("strokeMiterlimit", Float.toString(x))
   let strokeLinecap = x => D(
     "strokeLinecap",
     switch x {
@@ -2040,7 +2033,7 @@ module SVG = {
     },
   )
   let stopColor = x => D("stopColor", string_of_color(x))
-  let stopOpacity = x => D("stopOpacity", Js.Float.toString(x))
+  let stopOpacity = x => D("stopOpacity", Float.toString(x))
 }
 
 let touchAction = x => D("touchAction", x->TouchAction.toString)

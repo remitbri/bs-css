@@ -1,0 +1,17 @@
+{
+  "name": "bs-css-dom",
+  "jsx": { "version": 4 },
+  "warnings": {
+    "number": "+A-32-34-44",
+    "error": "+A-32-34-44"
+  },
+  "suffix": ".mjs",
+  "sources": ["src"],
+  "dependencies": ["bs-css", "@rescript/react"],
+  "package-specs": [
+    {
+      "module": "esmodule",
+      "in-source": false
+    }
+  ]
+}

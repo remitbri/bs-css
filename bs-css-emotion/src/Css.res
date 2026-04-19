@@ -3,30 +3,30 @@ include Css_Colors
 
 include Css_Legacy_Core.Make({
   type styleEncoding = string
-  type renderer = Js.Json.t // not relevant
+  type renderer = JSON.t // not relevant
 
   @module("@emotion/css")
-  external injectRaw: (. string) => unit = "injectGlobal"
-  let renderRaw = (. _, css) => injectRaw(. css)
+  external injectRaw: string => unit = "injectGlobal"
+  let renderRaw = (_, css) => injectRaw(css)
 
   @module("@emotion/css")
-  external injectRawRules: (. Js.Json.t) => unit = "injectGlobal"
+  external injectRawRules: JSON.t => unit = "injectGlobal"
 
-  let injectRules = (. selector: string, rules) =>
-    injectRawRules(. Js.Dict.fromArray([(selector, rules)])->Js.Json.object_)
-  let renderRules = (. _, selector, rules) =>
-    injectRawRules(. Js.Dict.fromArray([(selector, rules)])->Js.Json.object_)
-
-  @module("@emotion/css")
-  external mergeStyles: (. array<styleEncoding>) => styleEncoding = "cx"
-
-  @module("@emotion/css") external make: (. Js.Json.t) => styleEncoding = "css"
+  let injectRules = (selector: string, rules) =>
+    injectRawRules(Dict.fromArray([(selector, rules)])->JSON.Encode.object)
+  let renderRules = (_, selector, rules) =>
+    injectRawRules(Dict.fromArray([(selector, rules)])->JSON.Encode.object)
 
   @module("@emotion/css")
-  external makeAnimation: (. Js.Dict.t<Js.Json.t>) => string = "keyframes"
+  external mergeStyles: array<styleEncoding> => styleEncoding = "cx"
 
-  let makeKeyframes = (. frames) => makeAnimation(. frames)
-  let renderKeyframes = (. _, frames) => makeAnimation(. frames)
+  @module("@emotion/css") external make: JSON.t => styleEncoding = "css"
+
+  @module("@emotion/css")
+  external makeAnimation: dict<JSON.t> => string = "keyframes"
+
+  let makeKeyframes = frames => makeAnimation(frames)
+  let renderKeyframes = (_, frames) => makeAnimation(frames)
 })
 
 type cache

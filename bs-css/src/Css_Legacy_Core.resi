@@ -13,7 +13,7 @@ module type MakeResult = {
   let renderRule: (renderer, string) => unit
 
   let global: (string, list<rule>) => unit
-  let renderGlobal: (. renderer, string, list<rule>) => unit
+  let renderGlobal: (renderer, string, list<rule>) => unit
 
   let style: list<rule> => styleEncoding
 
@@ -29,7 +29,7 @@ module type MakeResult = {
 module Make: (CssImpl: Css_Core.CssImplementationIntf) =>
 (MakeResult with type styleEncoding := CssImpl.styleEncoding and type renderer := CssImpl.renderer)
 
-let toJson: list<rule> => Js.Json.t
+let toJson: list<rule> => JSON.t
 
 let important: rule => rule
 let label: string => rule
@@ -448,7 +448,7 @@ let flexWrap: [< Types.FlexWrap.t | Types.Var.t | Types.Cascading.t] => rule
  The element is removed from the normal flow of the page, though still remaining a part of the flow
  (in contrast to absolute positioning).
  */
-let float: [< Types.Float.t | Types.Var.t | Types.Cascading.t] => rule
+let float: [< Types.Float_AtomicTypes.t | Types.Var.t | Types.Cascading.t] => rule
 
 /**
  The font-family CSS property specifies a prioritized list of one or more font family names and/or generic family names
@@ -1371,7 +1371,6 @@ let selection: list<rule> => rule
 /**
  Combinators selectors
  */
-
 /**
  The > combinator selects nodes that are direct children of the first element.
  */
@@ -1815,7 +1814,6 @@ let fontFace: (
 /**
  * Transition
  */
-
 module Transition: {
   type t = [#value(string)]
 
@@ -1843,7 +1841,6 @@ let transitions: list<[Transition.t]> => rule
 /**
  * Animation
  */
-
 module Animation: {
   type t = [#value(string)]
 
@@ -1918,7 +1915,6 @@ let animationTimingFunction: Types.TimingFunction.t => rule
 /**
  SVG
  *** */
-
 module SVG: {
   let fill: [< Types.SVG.Fill.t | Types.Color.t | Types.Var.t | Types.Url.t] => rule
   let fillRule: [#nonzero | #evenodd] => rule

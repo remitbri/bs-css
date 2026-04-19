@@ -1,30 +1,30 @@
 open CssJs
 
-insertRule(. ".raw-css { display:block; background-color: green; width: 50px; height: 50px; }")
+insertRule(".raw-css { display:block; background-color: green; width: 50px; height: 50px; }")
 
 module Section = Comp.Section
 module RedBox = Comp.RedBox
 
-let concat = Belt.Array.concat
+let concat = Array.concat
 let redBox = Comp.redBox
 let addToRedBox = rules => redBox->concat(rules)
 
 let fontItem = [marginLeft(10->px), paddingRight(10->px), borderRight(1->px, solid, black)]
 
-let spin = keyframes(. [(0, [transform(rotate(deg(0.)))]), (100, [transform(rotate(deg(360.)))])])
+let spin = keyframes([(0, [transform(rotate(deg(0.)))]), (100, [transform(rotate(deg(360.)))])])
 
-let scaleAnimation = keyframes(. [
+let scaleAnimation = keyframes([
   (0, [transform(scale(0.3, 0.3))]),
   (100, [transform(scale(1.0, 1.0))]),
 ])
 
 let miniBox = [border(2->px, solid, black), width(15->px), height(15->px), margin(1->px)]
 
-let mergedStyles = merge(. [
-  style(. [padding(0->px), fontSize(1->px)]),
-  style(. [padding(20->px), fontSize(24->px), color(blue)]),
-  style(. [media(. "(max-width: 768px)", [padding(10->px)])]),
-  style(. [media(. "(max-width: 768px)", [fontSize(16->px), color(red)])]),
+let mergedStyles = merge([
+  style([padding(0->px), fontSize(1->px)]),
+  style([padding(20->px), fontSize(24->px), color(blue)]),
+  style([media("(max-width: 768px)", [padding(10->px)])]),
+  style([media("(max-width: 768px)", [fontSize(16->px), color(red)])]),
 ])
 
 let differentHeightLengths =
@@ -43,8 +43,8 @@ let differentHeightLengths =
     vmin(1.0),
     zero,
   ]
-  ->Belt.Array.map(x => {
-    let className = style(. addToRedBox([height(x)]))
+  ->Array.map(x => {
+    let className = style(addToRedBox([height(x)]))
     <div className key=className />
   })
   ->React.array
@@ -69,11 +69,11 @@ let make = () =>
       <RedBox rules=[background(currentColor), color(blue)] />
     </Section>
     <Section name="Color Scheme">
-      <div className={style(. [display(#flex), gap(#px(20))])}>
-        <div className={style(. [colorScheme(#light), backgroundColor(lightyellow)])}>
+      <div className={style([display(#flex), gap(#px(20))])}>
+        <div className={style([colorScheme(#light), backgroundColor(lightyellow)])}>
           <div> {"color-scheme: light"->React.string} </div>
           <div
-            className={style(. [
+            className={style([
               background(#lightDark(#hex("000"), #hex("FFF"))),
               border(#px(1), #solid, black),
               width(#px(50)),
@@ -81,10 +81,10 @@ let make = () =>
             ])}
           />
         </div>
-        <div className={style(. [colorScheme(#dark), backgroundColor(darkblue), color(white)])}>
+        <div className={style([colorScheme(#dark), backgroundColor(darkblue), color(white)])}>
           <div> {"color-scheme: dark"->React.string} </div>
           <div
-            className={style(. [
+            className={style([
               background(#lightDark(#hex("000"), #hex("FFF"))),
               border(#px(1), #solid, black),
               width(#px(50)),
@@ -246,8 +246,8 @@ let make = () =>
           ("whitesmoke", whitesmoke),
           ("yellow", yellow),
           ("yellowgreen", yellowgreen),
-        ]->Belt.Array.map(((name, value)) =>
-          <div key=name title=name className={style(. [background(value)]->concat(miniBox))} />
+        ]->Array.map(((name, value)) =>
+          <div key=name title=name className={style([background(value)]->concat(miniBox))} />
         ),
       )}
     </Section>
@@ -325,15 +325,16 @@ let make = () =>
     </Section>
     <Section name="Grid">
       <div
-        className={style(. [
+        className={style([
           width(pct(100.)),
           height(500->px),
           display(grid),
           gridTemplateColumns([150->px, auto, 150->px]),
           gridTemplateRows([60->px, auto]),
-        ])}>
+        ])}
+      >
         <div
-          className={style(. [
+          className={style([
             gridColumnStart(1),
             gridColumnEnd(4),
             background(red),
@@ -341,22 +342,23 @@ let make = () =>
             gridRowEnd(1),
           ])}
         />
-        <div className={style(. [background(blue), gridColumn(1, 1), gridRow(2, 2)])} />
+        <div className={style([background(blue), gridColumn(1, 1), gridRow(2, 2)])} />
         <div
-          className={style(. [
+          className={style([
             background(green),
             gridColumn(2, 2),
             gridRow(2, 2),
             display(inlineGrid),
             gridTemplateColumns([50->px, auto]),
             gridTemplateRows([40->px, auto]),
-          ])}>
-          <div className={style(. [background(yellow), gridRow(1, 1), gridColumn(2, 2)])} />
-          <div className={style(. [background(green), gridRow(1, 2), gridColumn(1, 1)])} />
-          <div className={style(. [background(purple), gridRow(2, 2), gridColumn(2, 2)])} />
+          ])}
+        >
+          <div className={style([background(yellow), gridRow(1, 1), gridColumn(2, 2)])} />
+          <div className={style([background(green), gridRow(1, 2), gridColumn(1, 1)])} />
+          <div className={style([background(purple), gridRow(2, 2), gridColumn(2, 2)])} />
         </div>
         <div
-          className={style(. [
+          className={style([
             gridColumnStart(3),
             gridColumnEnd(3),
             background(blue),
@@ -365,47 +367,50 @@ let make = () =>
           ])}
         />
       </div>
-      <div className={style(. [display(#grid), gridAutoFlow(#row)])}>
-        <div className={style(. [background(purple)])}>
+      <div className={style([display(#grid), gridAutoFlow(#row)])}>
+        <div className={style([background(purple)])}>
           {"grid auto direction row 1"->React.string}
         </div>
-        <div className={style(. [background(green)])}>
+        <div className={style([background(green)])}>
           {"grid auto direction row 2"->React.string}
         </div>
       </div>
       <div
-        className={style(. [
+        className={style([
           display(#grid),
           gridTemplateColumns([100->px, #repeat(#num(2), 60->px)]),
-        ])}>
-        <div className={style(. [background(purple)])}> {"Grid track repeat"->React.string} </div>
-        <div className={style(. [background(green)])}> {"two times"->React.string} </div>
-        <div className={style(. [background(red)])}> {"three times"->React.string} </div>
+        ])}
+      >
+        <div className={style([background(purple)])}> {"Grid track repeat"->React.string} </div>
+        <div className={style([background(green)])}> {"two times"->React.string} </div>
+        <div className={style([background(red)])}> {"three times"->React.string} </div>
       </div>
-      <div className={style(. [display(#grid), gridAutoColumns(100->px)])}>
-        <div className={style(. [background(purple)])}>
+      <div className={style([display(#grid), gridAutoColumns(100->px)])}>
+        <div className={style([background(purple)])}>
           {"Grid auto columns (100px)"->React.string}
         </div>
-        <div className={style(. [background(green)])}> {"100px"->React.string} </div>
-        <div className={style(. [background(blue)])}> {"100px"->React.string} </div>
+        <div className={style([background(green)])}> {"100px"->React.string} </div>
+        <div className={style([background(blue)])}> {"100px"->React.string} </div>
       </div>
     </Section>
     <Section name="Flexbox">
       <div
-        className={style(. [
+        className={style([
           flexDirection(column),
           flexGrow(1.),
           alignItems(stretch),
-          selector(. "& > *", [marginBottom(10->px), width(pct(100.))]),
-        ])}>
+          selector("& > *", [marginBottom(10->px), width(pct(100.))]),
+        ])}
+      >
         <div
-          className={style(. [
+          className={style([
             display(flexBox),
             flexDirection(row),
             background(gray),
             alignItems(flexStart),
             justifyContent(flexEnd),
-          ])}>
+          ])}
+        >
           <RedBox rules=[order(1), flexGrow(1.), flexShrink(1.), flexBasis(auto)] />
           <RedBox rules=[flex(none)] />
           <RedBox rules=[order(1), flex3(~grow=1.5, ~shrink=0.8, ~basis=100->px)] />
@@ -413,54 +418,69 @@ let make = () =>
           <RedBox />
         </div>
         <div
-          className={style(. [
+          className={style([
             display(flexBox),
             flexDirection(column),
             background(gray),
             alignItems(baseline),
             justifyContent(flexStart),
-          ])}>
-          <RedBox /> <RedBox /> <RedBox />
+          ])}
+        >
+          <RedBox />
+          <RedBox />
+          <RedBox />
         </div>
         <div
-          className={style(. [
+          className={style([
             display(flexBox),
             flexDirection(rowReverse),
             background(gray),
             alignItems(center),
             justifyContent(spaceBetween),
-          ])}>
-          <RedBox /> <RedBox rules=[height(50->px), width(50->px)] /> <RedBox />
+          ])}
+        >
+          <RedBox />
+          <RedBox rules=[height(50->px), width(50->px)] />
+          <RedBox />
         </div>
         <div
-          className={style(. [
+          className={style([
             display(flexBox),
             flexDirection(columnReverse),
             background(gray),
             alignItems(flexEnd),
             justifyContent(flexEnd),
-          ])}>
-          <RedBox /> <RedBox rules=[height(50->px), width(50->px)] /> <RedBox />
+          ])}
+        >
+          <RedBox />
+          <RedBox rules=[height(50->px), width(50->px)] />
+          <RedBox />
         </div>
         <div
-          className={style(. [
+          className={style([
             display(flexBox),
             flexDirection(row),
             background(gray),
             alignItems(stretch),
             justifyContent(spaceAround),
-          ])}>
-          <RedBox /> <RedBox rules=[height(50->px), width(50->px)] /> <RedBox />
+          ])}
+        >
+          <RedBox />
+          <RedBox rules=[height(50->px), width(50->px)] />
+          <RedBox />
         </div>
         <div
-          className={style(. [
+          className={style([
             display(flexBox),
             flexDirection(row),
             background(gray),
             alignItems(stretch),
             justifyContent(spaceEvenly),
-          ])}>
-          <RedBox /> <RedBox rules=[height(50->px), width(50->px)] /> <RedBox />
+          ])}
+        >
+          <RedBox />
+          <RedBox rules=[height(50->px), width(50->px)] />
+          <RedBox />
         </div>
       </div>
     </Section>
@@ -583,19 +603,19 @@ let make = () =>
     </Section>
     <Section name="List">
       <ul>
-        <li className={style(. [listStyle(#disc, inside, none)])} />
-        <li className={style(. [listStyleType(#circle)])} />
-        <li className={style(. [listStyleType(#square)])} />
-        <li className={style(. [listStyleType(#decimal)])} />
-        <li className={style(. [listStyleType(#lowerAlpha)])} />
-        <li className={style(. [listStyleType(#upperAlpha)])} />
-        <li className={style(. [listStyleType(#lowerGreek)])} />
-        <li className={style(. [listStyleType(#lowerLatin)])} />
-        <li className={style(. [listStyleType(#upperLatin)])} />
-        <li className={style(. [listStyleType(#lowerRoman)])} />
-        <li className={style(. [listStyleType(#upperRoman)])} />
+        <li className={style([listStyle(#disc, inside, none)])} />
+        <li className={style([listStyleType(#circle)])} />
+        <li className={style([listStyleType(#square)])} />
+        <li className={style([listStyleType(#decimal)])} />
+        <li className={style([listStyleType(#lowerAlpha)])} />
+        <li className={style([listStyleType(#upperAlpha)])} />
+        <li className={style([listStyleType(#lowerGreek)])} />
+        <li className={style([listStyleType(#lowerLatin)])} />
+        <li className={style([listStyleType(#upperLatin)])} />
+        <li className={style([listStyleType(#lowerRoman)])} />
+        <li className={style([listStyleType(#upperRoman)])} />
         <li
-          className={style(. [
+          className={style([
             listStyleType(#disc),
             listStylePosition(inside),
             listStyleImage(url("./facebook.png")),
@@ -645,7 +665,7 @@ let make = () =>
     </Section>
     <Section name="Text">
       <p
-        className={style(. [
+        className={style([
           color(black),
           fontFamilies([#custom("Helvetica"), #sansSerif]),
           fontSize(pt(18)),
@@ -667,46 +687,46 @@ let make = () =>
           wordBreak(breakAll),
           wordSpacing(20->px),
           wordWrap(breakWord),
-        ])}>
+        ])}
+      >
         {"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."->React.string}
       </p>
-      <h2 className={style(. [width(pct(100.))])}> {"Named Font weights"->React.string} </h2>
+      <h2 className={style([width(pct(100.))])}> {"Named Font weights"->React.string} </h2>
       <span
-        className={style(. [
+        className={style([
           fontWeight(thin),
           paddingRight(10->px),
           borderRight(1->px, solid, black),
-        ])}>
+        ])}
+      >
         {"thin"->React.string}
       </span>
-      <span className={style(. [fontWeight(extraLight)]->concat(fontItem))}>
+      <span className={style([fontWeight(extraLight)]->concat(fontItem))}>
         {"extra light"->React.string}
       </span>
-      <span className={style(. [fontWeight(light)]->concat(fontItem))}>
+      <span className={style([fontWeight(light)]->concat(fontItem))}>
         {"light"->React.string}
       </span>
-      <span className={style(. [fontWeight(normal)]->concat(fontItem))}>
+      <span className={style([fontWeight(normal)]->concat(fontItem))}>
         {"normal"->React.string}
       </span>
-      <span className={style(. [fontWeight(medium)]->concat(fontItem))}>
+      <span className={style([fontWeight(medium)]->concat(fontItem))}>
         {"medium"->React.string}
       </span>
-      <span className={style(. [fontWeight(semiBold)]->concat(fontItem))}>
+      <span className={style([fontWeight(semiBold)]->concat(fontItem))}>
         {"semiBold"->React.string}
       </span>
-      <span className={style(. [fontWeight(bold)]->concat(fontItem))}>
-        {"bold"->React.string}
-      </span>
-      <span className={style(. [fontWeight(extraBold)]->concat(fontItem))}>
+      <span className={style([fontWeight(bold)]->concat(fontItem))}> {"bold"->React.string} </span>
+      <span className={style([fontWeight(extraBold)]->concat(fontItem))}>
         {"extra bold"->React.string}
       </span>
-      <span className={style(. [fontWeight(#black)]->concat(fontItem))}>
+      <span className={style([fontWeight(#black)]->concat(fontItem))}>
         {"black"->React.string}
       </span>
-      <span className={style(. [fontWeight(lighter)]->concat(fontItem))}>
+      <span className={style([fontWeight(lighter)]->concat(fontItem))}>
         {"lighter"->React.string}
       </span>
-      <span className={style(. [fontWeight(bolder)]->concat(fontItem))}>
+      <span className={style([fontWeight(bolder)]->concat(fontItem))}>
         {"bolder"->React.string}
       </span>
     </Section>
@@ -749,7 +769,7 @@ let make = () =>
     <Section name="Cascading">
       {"inherit"->React.string}
       <div
-        className={style(. [
+        className={style([
           display(inherit_),
           position(inherit_),
           fontSize(inherit_),
@@ -759,7 +779,7 @@ let make = () =>
       />
       {"unset"->React.string}
       <div
-        className={style(. [
+        className={style([
           display(unset),
           position(unset),
           fontSize(unset),
@@ -769,24 +789,24 @@ let make = () =>
       />
     </Section>
     <Section name="Columns">
-      <p className={style(. [columnCount(count(10))])}>
+      <p className={style([columnCount(count(10))])}>
         {"This is a bunch of text split into columns
              using the CSS `column-count` property. The text
              is equally distributed over the columns."->React.string}
       </p>
     </Section>
     <Section name="Resize">
-      <textarea className={style(. [resize(none)])} value="Can't resize textarea" readOnly=true />
-      <div className={style(. [marginLeft(20->px), overflow(scroll), resize(horizontal)])}>
+      <textarea className={style([resize(none)])} value="Can't resize textarea" readOnly=true />
+      <div className={style([marginLeft(20->px), overflow(scroll), resize(horizontal)])}>
         {"Resizable div (horizontal)"->React.string}
       </div>
-      <div className={style(. [marginLeft(20->px), overflow(scroll), resize(vertical)])}>
+      <div className={style([marginLeft(20->px), overflow(scroll), resize(vertical)])}>
         {"Resizable div (vertical)"->React.string}
       </div>
     </Section>
     <Section name="Content">
       <div
-        className={style(. [
+        className={style([
           position(relative),
           after([
             contentRule(#none),
@@ -797,11 +817,12 @@ let make = () =>
             height(pct(100.)),
             border(1->px, solid, black),
           ]),
-        ])}>
+        ])}
+      >
         {"none"->React.string}
       </div>
       <div
-        className={style(. [
+        className={style([
           position(relative),
           after([
             contentRule(#normal),
@@ -812,25 +833,27 @@ let make = () =>
             height(pct(100.)),
             border(1->px, solid, black),
           ]),
-        ])}>
+        ])}
+      >
         {"normal"->React.string}
       </div>
-      <div className={style(. [position(relative), marginLeft(20->px)])}>
+      <div className={style([position(relative), marginLeft(20->px)])}>
         <a
           href="https://github.com/SentiaAnalytics/bs-css"
-          className={style(. [
+          className={style([
             before([
               contentRule(#text("external ")),
               backgroundColor(red),
               display(inlineBlock),
               flexBasis(content),
             ]),
-          ])}>
+          ])}
+        >
           {"link"->React.string}
         </a>
       </div>
       <div
-        className={style(. [
+        className={style([
           position(relative),
           marginLeft(20->px),
           after([
@@ -842,11 +865,12 @@ let make = () =>
             height(pct(100.)),
             border(1->px, solid, black),
           ]),
-        ])}>
+        ])}
+      >
         {"empty content"->React.string}
       </div>
       <div
-        className={style(. [
+        className={style([
           position(relative),
           marginLeft(20->px),
           paddingLeft(20->px),
@@ -859,45 +883,50 @@ let make = () =>
             height(18->px),
             border(1->px, solid, black),
           ]),
-        ])}>
+        ])}
+      >
         {"url"->React.string}
       </div>
       <div
-        className={style(. [
+        className={style([
           marginLeft(20->px),
           counterReset(Types.CounterReset.reset("foo", ~value=1)),
           before([
             contentRule(Types.Counter.counter("foo")),
             border(px /* for test */(1), solid, black),
           ]),
-        ])}>
+        ])}
+      >
         {"counter"->React.string}
       </div>
       <div
-        className={style(. [
+        className={style([
           counterReset(Types.CounterReset.reset("foo", ~value=1)),
           marginLeft(20->px),
-        ])}>
+        ])}
+      >
         <div
-          className={style(. [
+          className={style([
             counterReset(Types.CounterReset.reset("foo", ~value=2)),
             before([
               contentRule(Types.Counters.counters("foo", ~separator="@", ~style=#upperRoman)),
               border(1->px, solid, black),
             ]),
-          ])}>
+          ])}
+        >
           {"counters"->React.string}
         </div>
       </div>
       <div
-        className={style(. [
+        className={style([
           marginLeft(20->px),
           before([contentRule(#attr("class")), border(1->px, solid, black)]),
-        ])}>
+        ])}
+      >
         {"attr"->React.string}
       </div>
       <div
-        className={style(. [
+        className={style([
           marginLeft(20->px),
           before([
             contentRule(Types.Gradient.linearGradient(deg(45.), [(zero, red), (pct(100.), blue)])),
@@ -906,21 +935,25 @@ let make = () =>
             height(18->px),
             width(18->px),
           ]),
-        ])}>
+        ])}
+      >
         {"linear gradient"->React.string}
       </div>
       <div
-        className={style(. [
+        className={style([
           marginLeft(20->px),
           before([
             contentRules([#openQuote, #text("foo"), #closeQuote]),
             border(px(1), solid, black),
           ]),
-        ])}>
+        ])}
+      >
         {"contents (quotes)"->React.string}
       </div>
     </Section>
-    <Section name="InsertRule, the ultimate escape hatch"> <div className="raw-css" /> </Section>
+    <Section name="InsertRule, the ultimate escape hatch">
+      <div className="raw-css" />
+    </Section>
     <Section name="Merging style names">
       <button className=mergedStyles> {"Merged"->React.string} </button>
     </Section>
@@ -944,14 +977,16 @@ let make = () =>
           ]),
         ]
       />
-      <svg height="0" className={style(. [display(none)])}>
-        <filter id="f1"> <feGaussianBlur stdDeviation="3" /> </filter>
+      <svg height="0" className={style([display(none)])}>
+        <filter id="f1">
+          <feGaussianBlur stdDeviation="3" />
+        </filter>
       </svg>
       <RedBox rules=[filter([url("#f1")])] />
     </Section>
     <Section name="Direction">
       <Section name="ltr">
-        <div className={style(. [direction(#ltr), display(#flex)])}>
+        <div className={style([direction(#ltr), display(#flex)])}>
           <RedBox> {"1"->React.string} </RedBox>
           <RedBox> {"2"->React.string} </RedBox>
           <RedBox> {"3"->React.string} </RedBox>
@@ -959,7 +994,7 @@ let make = () =>
         </div>
       </Section>
       <Section name="rtl">
-        <div className={style(. [direction(#rtl), display(#flex)])}>
+        <div className={style([direction(#rtl), display(#flex)])}>
           <RedBox> {"1"->React.string} </RedBox>
           <RedBox> {"2"->React.string} </RedBox>
           <RedBox> {"3"->React.string} </RedBox>
@@ -967,7 +1002,7 @@ let make = () =>
         </div>
       </Section>
       <Section name="Unset">
-        <div className={style(. [direction(#unset), display(#flex)])}>
+        <div className={style([direction(#unset), display(#flex)])}>
           <RedBox> {"1"->React.string} </RedBox>
           <RedBox> {"2"->React.string} </RedBox>
           <RedBox> {"3"->React.string} </RedBox>
@@ -976,13 +1011,13 @@ let make = () =>
       </Section>
     </Section>
     <Section name="object-fit">
-      <img className={style(. addToRedBox([objectFit(#fill)]))} src="./img-29.jpg" />
-      <img className={style(. addToRedBox([objectFit(#contain)]))} src="./img-29.jpg" />
-      <img className={style(. addToRedBox([objectFit(#cover)]))} src="./img-29.jpg" />
-      <img className={style(. addToRedBox([objectFit(#none)]))} src="./img-29.jpg" />
-      <img className={style(. addToRedBox([objectFit(#scaleDown)]))} src="./img-29.jpg" />
-      <img className={style(. addToRedBox([objectFit(#inherit_)]))} src="./img-29.jpg" />
-      <img className={style(. addToRedBox([objectFit(#initial)]))} src="./img-29.jpg" />
-      <img className={style(. addToRedBox([objectFit(#unset)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#fill)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#contain)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#cover)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#none)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#scaleDown)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#inherit_)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#initial)]))} src="./img-29.jpg" />
+      <img className={style(addToRedBox([objectFit(#unset)]))} src="./img-29.jpg" />
     </Section>
   </div>

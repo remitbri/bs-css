@@ -5,9 +5,9 @@ module CssForTest = {
 open CssForTest
 let describe = Jest.describe
 let test = Jest.test
-let toBe = (e, x) => Jest.toBe(e, x->Js.Json.stringifyAny)
+let toBe = (e, x) => Jest.toBe(e, x->JSON.stringifyAny)
 let expect = x =>
-  Jest.expect(toJson(list{x})->Js.Json.stringifyAny) /* simple rule for more readable tests */
+  Jest.expect(toJson(list{x})->JSON.stringifyAny) /* simple rule for more readable tests */
 
 describe("borderTopStyle", () => {
   test("test usage", () => {
