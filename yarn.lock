@@ -2079,11 +2079,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bs-css-dom@npm:^6.0.0, bs-css-dom@workspace:bs-css-dom":
+"rescript-css-dom@npm:^1.0.0, rescript-css-dom@workspace:rescript-css-dom":
   version: 0.0.0-use.local
-  resolution: "bs-css-dom@workspace:bs-css-dom"
+  resolution: "rescript-css-dom@workspace:rescript-css-dom"
   dependencies:
-    bs-css: "npm:18.1.1"
+    rescript-css: "npm:1.0.0"
     rescript: "npm:^12.0.0"
   peerDependencies:
     "@rescript/react": ^0.15.0
@@ -2092,22 +2092,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"bs-css-emotion@npm:^7.0.0, bs-css-emotion@workspace:bs-css-emotion":
+"rescript-css-emotion@npm:^1.0.0, rescript-css-emotion@workspace:rescript-css-emotion":
   version: 0.0.0-use.local
-  resolution: "bs-css-emotion@workspace:bs-css-emotion"
+  resolution: "rescript-css-emotion@workspace:rescript-css-emotion"
   dependencies:
     "@emotion/cache": "npm:^11.0.0"
     "@emotion/css": "npm:^11.0.0"
-    bs-css: "npm:18.1.1"
+    rescript-css: "npm:1.0.0"
     rescript: "npm:^12.0.0"
   languageName: unknown
   linkType: soft
 
-"bs-css-fela@npm:^5.0.0, bs-css-fela@workspace:bs-css-fela":
+"rescript-css-fela@npm:^1.0.0, rescript-css-fela@workspace:rescript-css-fela":
   version: 0.0.0-use.local
-  resolution: "bs-css-fela@workspace:bs-css-fela"
+  resolution: "rescript-css-fela@workspace:rescript-css-fela"
   dependencies:
-    bs-css: "npm:18.1.1"
+    rescript-css: "npm:1.0.0"
     fela: "npm:^12.2.0"
     react: "npm:^19.2.0"
     react-fela: "npm:^12.2.0"
@@ -2115,9 +2115,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"bs-css@npm:18.1.1, bs-css@npm:^18.0.0, bs-css@workspace:bs-css":
+"rescript-css@npm:1.0.0, rescript-css@npm:^1.0.0, rescript-css@workspace:rescript-css":
   version: 0.0.0-use.local
-  resolution: "bs-css@workspace:bs-css"
+  resolution: "rescript-css@workspace:rescript-css"
   dependencies:
     jest: "npm:^30.0.0"
     rescript: "npm:^12.0.0"
@@ -2580,8 +2580,8 @@ __metadata:
     "@rspack/cli": "npm:^1.4.0"
     "@rspack/core": "npm:^1.4.0"
     "@rspack/plugin-react-refresh": "npm:^1.4.0"
-    bs-css: "npm:^18.0.0"
-    bs-css-dom: "npm:^6.0.0"
+    rescript-css: "npm:^1.0.0"
+    rescript-css-dom: "npm:^1.0.0"
     react: "npm:^19.2.0"
     react-dom: "npm:^19.2.0"
     react-refresh: "npm:^0.18.0"
@@ -2598,8 +2598,8 @@ __metadata:
     "@rspack/cli": "npm:^1.4.0"
     "@rspack/core": "npm:^1.4.0"
     "@rspack/plugin-react-refresh": "npm:^1.4.0"
-    bs-css: "npm:^18.0.0"
-    bs-css-emotion: "npm:^7.0.0"
+    rescript-css: "npm:^1.0.0"
+    rescript-css-emotion: "npm:^1.0.0"
     react: "npm:^19.2.0"
     react-dom: "npm:^19.2.0"
     react-refresh: "npm:^0.18.0"
@@ -2613,8 +2613,8 @@ __metadata:
   dependencies:
     "@rescript/react": "npm:^0.15.0"
     "@rescript/runtime": "npm:^12.0.0"
-    bs-css: "npm:^18.0.0"
-    bs-css-fela: "npm:^5.0.0"
+    rescript-css: "npm:^1.0.0"
+    rescript-css-fela: "npm:^1.0.0"
     esbuild: "npm:^0.9.0"
     fela: "npm:^12.2.0"
     react: "npm:^19.2.0"

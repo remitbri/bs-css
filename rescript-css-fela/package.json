@@ -1,11 +1,11 @@
 {
-  "name": "bs-css-fela",
-  "version": "5.1.1",
+  "name": "rescript-css-fela",
+  "version": "1.0.0",
   "engines": {
     "yarn": "4.9.2",
     "node": "^24"
   },
-  "description": "bs-css bindings for Fela",
+  "description": "rescript-css bindings for Fela",
   "type": "module",
   "scripts": {
     "re:clean": "rescript clean",
@@ -22,12 +22,12 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giraud/bs-css.git"
+    "url": "git+https://github.com/remitbri/rescript-css.git"
   },
   "dependencies": {
-    "bs-css": "18.1.1",
     "fela": "^12.2.0",
-    "react-fela": "^12.2.0"
+    "react-fela": "^12.2.0",
+    "rescript-css": "1.0.0"
   },
   "devDependencies": {
     "react": "^19.2.0",

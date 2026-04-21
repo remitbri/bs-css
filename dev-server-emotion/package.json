@@ -19,11 +19,11 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giraud/bs-css.git"
+    "url": "git+https://github.com/remitbri/rescript-css.git"
   },
   "dependencies": {
-    "bs-css": "^18.0.0",
-    "bs-css-emotion": "^7.0.0"
+    "rescript-css": "^1.0.0",
+    "rescript-css-emotion": "^1.0.0"
   },
   "devDependencies": {
     "@rescript/react": "^0.15.0",

@@ -839,7 +839,7 @@ let make = () =>
       </div>
       <div className={style([position(relative), marginLeft(20->px)])}>
         <a
-          href="https://github.com/SentiaAnalytics/bs-css"
+          href="https://github.com/remitbri/rescript-css"
           className={style([
             before([
               contentRule(#text("external ")),
