@@ -22,10 +22,10 @@
     "url": "git+https://github.com/remitbri/rescript-css.git"
   },
   "dependencies": {
-    "rescript-css": "^1.0.0",
-    "rescript-css-fela": "^1.0.0",
     "fela": "^12.2.0",
-    "react-fela": "^12.2.0"
+    "react-fela": "^12.2.0",
+    "rescript-css": "^1.0.0",
+    "rescript-css-fela": "^1.0.0"
   },
   "devDependencies": {
     "@rescript/react": "^0.15.0",
