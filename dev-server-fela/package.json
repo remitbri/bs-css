@@ -30,7 +30,7 @@
   "devDependencies": {
     "@rescript/react": "^0.15.0",
     "@rescript/runtime": "^12.0.0",
-    "esbuild": "^0.9.0",
+    "esbuild": "^0.25.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "rescript": "^12.0.0"
