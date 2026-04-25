@@ -2,10 +2,10 @@
     "private": true,
     "packageManager": "yarn@4.9.2",
     "workspaces": [
-        "bs-css",
-        "bs-css-dom",
-        "bs-css-emotion",
-        "bs-css-fela",
+        "rescript-css",
+        "rescript-css-dom",
+        "rescript-css-emotion",
+        "rescript-css-fela",
         "dev-server-dom",
         "dev-server-emotion",
         "dev-server-fela"

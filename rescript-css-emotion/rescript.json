@@ -1,5 +1,5 @@
 {
-  "name": "bs-css-fela",
+  "name": "rescript-css-emotion",
   "jsx": { "version": 4 },
   "warnings": {
     "number": "+A-32-34-44",
@@ -7,7 +7,7 @@
   },
   "suffix": ".mjs",
   "sources": ["src"],
-  "dependencies": ["bs-css", "@rescript/react"],
+  "dependencies": ["rescript-css"],
   "package-specs": [
     {
       "module": "esmodule",

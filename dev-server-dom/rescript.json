@@ -7,7 +7,7 @@
   },
   "suffix": ".mjs",
   "sources": ["src"],
-  "dependencies": ["bs-css", "bs-css-dom", "@rescript/react"],
+  "dependencies": ["rescript-css", "rescript-css-dom", "@rescript/react"],
   "package-specs": [
     {
       "module": "esmodule",

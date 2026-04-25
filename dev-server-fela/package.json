@@ -19,11 +19,11 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giraud/bs-css.git"
+    "url": "git+https://github.com/remitbri/rescript-css.git"
   },
   "dependencies": {
-    "bs-css": "^18.0.0",
-    "bs-css-fela": "^5.0.0",
+    "rescript-css": "^1.0.0",
+    "rescript-css-fela": "^1.0.0",
     "fela": "^12.2.0",
     "react-fela": "^12.2.0"
   },

@@ -1,29 +1,47 @@
-# bs-css
+# rescript-css
 
 Statically typed DSL for writing css in ReScript.
 
-The bs-css library contains type css core definitions, it has different implementations:
+The rescript-css library contains type css core definitions, it has different implementations:
 
-- bs-css-emotion is a typed interface to [Emotion](https://github.com/emotion-js/emotion)
-- bs-css-fela is a typed interface to [Fela](https://github.com/robinweser/fela) (react)
-- bs-css-dom is a typed interface to `ReactDOM.Style.t` (rescript-react)
+- rescript-css-emotion is a typed interface to [Emotion](https://github.com/emotion-js/emotion)
+- rescript-css-fela is a typed interface to [Fela](https://github.com/robinweser/fela) (react)
+- rescript-css-dom is a typed interface to `ReactDOM.Style.t` (rescript-react)
+
+It is a fork from [bs-css](https://github.com/giraud/bs-css) to ensure the project can still be
+used with latest React and ReScript requirements.
 
 If you know another implementation that can be added, send a link in an issue or create a PR.
 
 ## Installation
 
 ```sh
-npm install --save bs-css bs-css-emotion
+npm install --save rescript-css rescript-css-emotion
 or
-yarn add bs-css bs-css-emotion
+yarn add rescript-css rescript-css-emotion
 ```
 
-In your `rescript.json`, include `"bs-css"` and `"bs-css-emotion"` in the `dependencies`.
+In your `rescript.json`, include `"rescript-css"` and `"rescript-css-emotion"` in the `dependencies`.
 
-You can replace `bs-css-emotion` with `bs-css-dom` in the above instructions if you prefer
-to use React styles, or `bs-css-fela` for a different runtime.
+You can replace `rescript-css-emotion` with `rescript-css-dom` in the above instructions if you prefer
+to use React styles, or `rescript-css-fela` for a different runtime.
 
-## Usage for bs-css-emotion
+## Migration from `bs-css*`
+
+Package names were renamed for the `1.0.0` release line:
+
+- `bs-css` -> `rescript-css`
+- `bs-css-dom` -> `rescript-css-dom`
+- `bs-css-emotion` -> `rescript-css-emotion`
+- `bs-css-fela` -> `rescript-css-fela`
+
+If you are upgrading:
+
+1. Replace old package names in your package manager dependencies and update the version of the package if needed.
+2. Replace old names in your `rescript.json` `dependencies`.
+3. Keep source imports unless your build config references old package names.
+
+## Usage for rescript-css-emotion
 
 ```rescript
 module Theme = {
@@ -130,7 +148,7 @@ let styles = style([selector("input[type='text']", [padding(px(20))])])
 
 ### Merging styles
 
-You should avoid trying to merge styles in the same list of rules or by concatinating lists. A list of rules is converted into a JS object before being passed to Emotion where every property becomes a key in the object. This means you lose any earlier rule if you have another rule with the same property later in the list. This is especially noticable [when writing sub-selectors and media queries](https://github.com/SentiaAnalytics/bs-css/issues/86)
+You should avoid trying to merge styles in the same list of rules or by concatinating lists. A list of rules is converted into a JS object before being passed to Emotion where every property becomes a key in the object. This means you lose any earlier rule if you have another rule with the same property later in the list. This is especially noticable [when writing sub-selectors and media queries](https://github.com/giraud/bs-css/issues/86)
 
 Trying to merge styles by just using concatenation can result in unexpected results.
 
@@ -220,7 +238,7 @@ Generates the following:
 
 Nothing is lost and everything ends up in the final stylesheet where normal overrides apply.
 
-## Usage for bs-css-fela
+## Usage for rescript-css-fela
 
 First you need to use a provider in your Jsx:
 
@@ -300,7 +318,7 @@ renderGlobal(renderer, "body", [margin(px(0))])
 renderGlobal(renderer, "h1, h2, h3", [color(rgb(33, 33, 33))])
 ```
 
-## Usage for bs-css-dom
+## Usage for rescript-css-dom
 
 Use style instead of classname, for example:
 
@@ -342,9 +360,11 @@ let make = () =>
 
 ## Where is the documentation?
 
-You can check out [Css_Js_Core.rei](bs-css/src/Css_Js_Core.rei) and [Css_Legacy_Core.rei](bs-css/src/Css_Legacy_Core.rei).
+You can check out [Css_Js_Core.rei](rescript-css/src/Css_Js_Core.rei) and [Css_Legacy_Core.rei](rescript-css/src/Css_Legacy_Core.rei).
 
 ## Thanks
+
+Thanks to [bs-css](https://github.com/giraud/bs-css) for starting the project
 
 Thanks to [emotion](https://github.com/emotion-js/emotion) which is doing all the heavy lifting.
 
