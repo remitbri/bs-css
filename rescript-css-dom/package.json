@@ -1,6 +1,6 @@
 {
   "name": "rescript-css-dom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "node": ">=24"
   },
@@ -25,7 +25,7 @@
     "url": "git+https://github.com/remitbri/rescript-css.git"
   },
   "dependencies": {
-    "rescript-css": "1.0.0"
+    "rescript-css": "1.0.1"
   },
   "peerDependencies": {
     "@rescript/react": "^0.15.0",

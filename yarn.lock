@@ -5413,7 +5413,7 @@ __metadata:
   resolution: "rescript-css-dom@workspace:rescript-css-dom"
   dependencies:
     rescript: "npm:^12.0.0"
-    rescript-css: "npm:1.0.0"
+    rescript-css: "npm:1.0.1"
   peerDependencies:
     "@rescript/react": ^0.15.0
     react: ^19.2.0
@@ -5428,7 +5428,7 @@ __metadata:
     "@emotion/cache": "npm:^11.0.0"
     "@emotion/css": "npm:^11.0.0"
     rescript: "npm:^12.0.0"
-    rescript-css: "npm:1.0.0"
+    rescript-css: "npm:1.0.1"
   languageName: unknown
   linkType: soft
 
@@ -5440,11 +5440,11 @@ __metadata:
     react: "npm:^19.2.0"
     react-fela: "npm:^12.2.0"
     rescript: "npm:^12.0.0"
-    rescript-css: "npm:1.0.0"
+    rescript-css: "npm:1.0.1"
   languageName: unknown
   linkType: soft
 
-"rescript-css@npm:1.0.0, rescript-css@npm:^1.0.0, rescript-css@workspace:rescript-css":
+"rescript-css@npm:1.0.1, rescript-css@npm:^1.0.0, rescript-css@workspace:rescript-css":
   version: 0.0.0-use.local
   resolution: "rescript-css@workspace:rescript-css"
   dependencies:
