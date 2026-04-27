@@ -2,9 +2,9 @@
   "name": "rescript-css-dom",
   "version": "1.0.0",
   "engines": {
-    "yarn": "4.9.2",
-    "node": "^24"
+    "node": ">=24"
   },
+  "packageManager": "yarn@4.9.2",
   "description": "rescript-css bindings for React DOM",
   "type": "module",
   "scripts": {
