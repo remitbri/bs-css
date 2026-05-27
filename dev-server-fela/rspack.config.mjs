@@ -1,4 +1,4 @@
-import { dirname } from "node:path";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "@rspack/cli";
 import { rspack } from "@rspack/core";
@@ -38,6 +38,13 @@ export default defineConfig({
             },
           },
         ],
+      },
+    ],
+  },
+  devServer: {
+    static: [
+      {
+        directory: join(__dirname, "../www"),
       },
     ],
   },
